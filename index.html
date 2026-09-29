@@ -3,140 +3,316 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vortex_IA Dashboard</title>
+  <title>Vortex_IA Ultimate Cockpit</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
+    :root {
+      --bg-color: #0b0f19;
+      --card-bg: #151c2c;
+      --border-color: #232d42;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --green: #22c55e;
+      --red: #ef4444;
+      --blue: #38bdf8;
+      --yellow: #f59e0b;
+    }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      background-color: #0f172a;
-      color: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
       margin: 0;
-      padding: 16px;
+      padding: 14px;
     }
-    h1 {
-      font-size: 1.2rem;
-      text-align: center;
-      color: #38bdf8;
-      margin-bottom: 20px;
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
     }
-    .card {
-      background-color: #1e293b;
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 12px;
-      border: 1px solid #334155;
+
+    .header h1 {
+      font-size: 1.1rem;
+      color: var(--blue);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    .card-title {
-      font-size: 0.85rem;
-      color: #94a3b8;
+
+    .status-dot {
+      height: 10px;
+      width: 10px;
+      background-color: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--green);
+    }
+
+    .section-title {
+      font-size: 0.75rem;
+      color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.05em;
+      margin: 16px 0 8px 2px;
+      font-weight: 600;
     }
-    .card-value {
-      font-size: 1.5rem;
-      font-weight: bold;
-      margin-top: 6px;
+
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 14px;
+      border: 1px solid var(--border-color);
+      margin-bottom: 10px;
     }
-    .signal-BUY { color: #22c55e; }
-    .signal-SELL { color: #ef4444; }
-    .signal-NEUTRAL { color: #e2e8f0; }
-    .grid {
+
+    .grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 10px;
     }
-    .status-dot {
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+
+    .val-large {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    .val-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .txt-green { color: var(--green); }
+    .txt-red { color: var(--red); }
+    .txt-yellow { color: var(--yellow); }
+    .txt-blue { color: var(--blue); }
+
+    /* Barres de progression pour le consensus et les probabilités */
+    .bar-container {
+      width: 100%;
       height: 8px;
-      width: 8px;
-      background-color: #22c55e;
-      border-radius: 50%;
-      display: inline-block;
-      margin-right: 6px;
+      background-color: #232d42;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 8px;
+      display: flex;
     }
+
+    .bar-buy { background-color: var(--green); height: 100%; }
+    .bar-sell { background-color: var(--red); height: 100%; }
+    .bar-neutral { background-color: var(--text-muted); height: 100%; }
+
+    /* Table des positions */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      margin-top: 6px;
+    }
+
+    th {
+      text-align: left;
+      color: var(--text-muted);
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    td {
+      padding: 8px 0;
+      border-bottom: 1px solid #1c2638;
+    }
+
+    .badge {
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: bold;
+    }
+    .badge-BUY { background: rgba(34, 197, 94, 0.2); color: var(--green); }
+    .badge-SELL { background: rgba(239, 68, 68, 0.2); color: var(--red); }
+
     .footer {
       text-align: center;
-      font-size: 0.75rem;
-      color: #64748b;
+      font-size: 0.7rem;
+      color: var(--text-muted);
       margin-top: 20px;
     }
   </style>
 </head>
 <body>
 
-  <h1><span class="status-dot"></span>VORTEX_IA DASHBOARD</h1>
+  <div class="header">
+    <h1><span class="status-dot"></span> VORTEX_IA COCKPIT</h1>
+    <span id="pnl-badge" class="badge badge-BUY">+0.00 $</span>
+  </div>
 
+  <!-- SECTION COMPTE & RISQUE -->
+  <div class="section-title">Solde & Gestion du Risque</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="val-sub">Équité (Equity)</div>
+      <div id="equity" class="val-large">-- $</div>
+      <div id="balance" class="val-sub">Solde: -- $</div>
+    </div>
+    <div class="card">
+      <div class="val-sub">Drawdown Actuel</div>
+      <div id="drawdown" class="val-large txt-green">0.00%</div>
+      <div id="pnl-val" class="val-sub">PnL Flottant: --</div>
+    </div>
+  </div>
+
+  <!-- SECTION SIGNAL & IA -->
+  <div class="section-title">Analyse IA & Tendances</div>
   <div class="card">
-    <div class="card-title">Consensus Stratégies (14 Agents)</div>
-    <div id="consensus" class="card-value signal-NEUTRAL">CHARGEMENT...</div>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div class="val-sub">Consensus Stratégique</div>
+      <div id="consensus-score" class="val-sub txt-blue">--% Confluence</div>
+    </div>
+    <div id="consensus-signal" class="val-large">CHARGEMENT...</div>
   </div>
 
-  <div class="grid">
+  <div class="grid-3">
     <div class="card">
-      <div class="card-title">Prob. IA Achat</div>
-      <div id="prob-buy" class="card-value signal-BUY">--%</div>
+      <div class="val-sub">Prob. Achat</div>
+      <div id="prob-buy" class="val-large txt-green">--%</div>
     </div>
     <div class="card">
-      <div class="card-title">Prob. IA Vente</div>
-      <div id="prob-sell" class="card-value signal-SELL">--%</div>
+      <div class="val-sub">Prob. Vente</div>
+      <div id="prob-sell" class="val-large txt-red">--%</div>
+    </div>
+    <div class="card">
+      <div class="val-sub">Tendance H1</div>
+      <div id="trend-h1" class="val-large">--</div>
     </div>
   </div>
 
-  <div class="grid">
-    <div class="card">
-      <div class="card-title">Tendance H1</div>
-      <div id="trend-h1" class="card-value">--</div>
+  <!-- SECTION DETAIL CONFLUENCES DES AGENTS -->
+  <div class="section-title">Répartition des 14 Agents</div>
+  <div class="card">
+    <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+      <span class="txt-green">Achat: <b id="agents-buy">0</b></span>
+      <span class="txt-yellow">Neutre: <b id="agents-neutral">0</b></span>
+      <span class="txt-red">Vente: <b id="agents-sell">0</b></span>
     </div>
-    <div class="card">
-      <div class="card-title">Positions Ouvertes</div>
-      <div id="open-pos" class="card-value">--</div>
+    <div class="bar-container">
+      <div id="bar-buy" class="bar-buy" style="width: 33%;"></div>
+      <div id="bar-neutral" class="bar-neutral" style="width: 33%;"></div>
+      <div id="bar-sell" class="bar-sell" style="width: 34%;"></div>
     </div>
+  </div>
+
+  <!-- SECTION POSITIONS ACTIVES MT5 -->
+  <div class="section-title">Positions En Cours (<span id="pos-count">0</span>)</div>
+  <div class="card">
+    <table id="positions-table">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Lots</th>
+          <th>Prix</th>
+          <th>Profit</th>
+        </tr>
+      </thead>
+      <tbody id="positions-list">
+        <tr>
+          <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 10px 0;">Aucune position active</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
   <div class="footer">
-    Mise à jour automatique toutes les 3 secondes
+    Mise à jour automatique en direct • VPS Link OK
   </div>
 
   <script>
-    // Initialisation de Telegram Web App
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    // URL corrigée avec le bon endpoint
     const API_URL = "https://paddle-corporate-maternal.ngrok-free.dev/api/status"; 
 
     async function fetchStatus() {
       try {
         const response = await fetch(API_URL, {
-          headers: {
-            'ngrok-skip-browser-warning': 'true'
-          }
+          headers: { 'ngrok-skip-browser-warning': 'true' }
         });
         const data = await response.json();
 
-        // Mise à jour du consensus
-        const consensusEl = document.getElementById("consensus");
-        if (data.consensus_signal) {
-          consensusEl.innerText = `${data.consensus_signal} (${data.consensus_score ?? 0}%)`;
-          consensusEl.className = `card-value signal-${data.consensus_signal}`;
-        }
+        // 1. Compte & Risque
+        document.getElementById("equity").innerText = `${data.equity ?? 0} $`;
+        document.getElementById("balance").innerText = `Solde: ${data.balance ?? 0} $`;
+        
+        const ddEl = document.getElementById("drawdown");
+        const ddVal = data.drawdown_pct ?? 0;
+        ddEl.innerText = `${ddVal}%`;
+        ddEl.className = ddVal > 5 ? "val-large txt-red" : (ddVal > 2 ? "val-large txt-yellow" : "val-large txt-green");
 
-        // Mise à jour des probabilités XGBoost
+        const pnl = data.pnl ?? 0;
+        const pnlBadge = document.getElementById("pnl-badge");
+        const pnlValEl = document.getElementById("pnl-val");
+        pnlBadge.innerText = `${pnl >= 0 ? '+' : ''}${pnl} $`;
+        pnlBadge.className = pnl >= 0 ? "badge badge-BUY" : "badge badge-SELL";
+        pnlValEl.innerText = `PnL Flottant: ${pnl >= 0 ? '+' : ''}${pnl} $`;
+
+        // 2. Signal & IA
+        const consensusEl = document.getElementById("consensus-signal");
+        consensusEl.innerText = data.consensus_signal ?? "NEUTRAL";
+        consensusEl.className = `val-large txt-${data.consensus_signal === 'BUY' ? 'green' : (data.consensus_signal === 'SELL' ? 'red' : 'yellow')}`;
+        document.getElementById("consensus-score").innerText = `${data.consensus_score ?? 0}% Confluence`;
+
         document.getElementById("prob-buy").innerText = `${data.prob_buy ?? 0}%`;
         document.getElementById("prob-sell").innerText = `${data.prob_sell ?? 0}%`;
-
-        // Tendance H1 & Positions
-        document.getElementById("trend-h1").innerText = data.trend_h1 ?? "--";
         
-        // Gestion des positions ouvertes
-        const posCount = Array.isArray(data.open_positions) ? data.open_positions.length : (data.open_positions ?? 0);
-        document.getElementById("open-pos").innerText = posCount;
+        const trendEl = document.getElementById("trend-h1");
+        trendEl.innerText = data.trend_h1 ?? "--";
+        trendEl.className = `val-large txt-${data.trend_h1 === 'BUY' ? 'green' : (data.trend_h1 === 'SELL' ? 'red' : 'yellow')}`;
+
+        // 3. Confluences des Agents
+        const buy = data.agents_buy ?? 0;
+        const neutral = data.agents_neutral ?? 0;
+        const sell = data.agents_sell ?? 0;
+        const total = (buy + neutral + sell) || 14;
+
+        document.getElementById("agents-buy").innerText = buy;
+        document.getElementById("agents-neutral").innerText = neutral;
+        document.getElementById("agents-sell").innerText = sell;
+
+        document.getElementById("bar-buy").style.width = `${(buy / total) * 100}%`;
+        document.getElementById("bar-neutral").style.width = `${(neutral / total) * 100}%`;
+        document.getElementById("bar-sell").style.width = `${(sell / total) * 100}%`;
+
+        // 4. Positions Actives
+        const posList = Array.isArray(data.open_positions) ? data.open_positions : [];
+        document.getElementById("pos-count").innerText = posList.length;
+
+        const listEl = document.getElementById("positions-list");
+        if (posList.length === 0) {
+          listEl.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--text-muted); padding: 10px 0;">Aucune position active</td></tr>`;
+        } else {
+          listEl.innerHTML = posList.map(p => `
+            <tr>
+              <td><span class="badge badge-${p.type}">${p.type} ${p.symbol}</span></td>
+              <td><b>${p.volume}</b></td>
+              <td>${p.price_open}</td>
+              <td class="${p.profit >= 0 ? 'txt-green' : 'txt-red'}"><b>${p.profit >= 0 ? '+' : ''}${p.profit} $</b></td>
+            </tr>
+          `).join('');
+        }
 
       } catch (err) {
-        console.error("Erreur de connexion à l'API :", err);
+        console.error("Erreur de synchronisation Cockpit :", err);
       }
     }
 
-    // Rafraîchissement toutes les 3 secondes
     fetchStatus();
     setInterval(fetchStatus, 3000);
   </script>
