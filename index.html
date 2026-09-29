@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
@@ -101,26 +101,35 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    // ⚠️ REMPLACE CETTE URL PAR L'URL HTTPS DE TON VPS OU NGROK (ex: https://vps-ip:8000/api/status ou https://xxxx.ngrok-free.app/api/status)
-    const API_URL = "https://paddle-corporate-maternal.ngrok-free.dev"; 
+    // URL corrigée avec le bon endpoint
+    const API_URL = "https://paddle-corporate-maternal.ngrok-free.dev/api/status"; 
 
     async function fetchStatus() {
       try {
-        const response = await fetch(API_URL);
+        const response = await fetch(API_URL, {
+          headers: {
+            'ngrok-skip-browser-warning': 'true'
+          }
+        });
         const data = await response.json();
 
         // Mise à jour du consensus
         const consensusEl = document.getElementById("consensus");
-        consensusEl.innerText = `${data.consensus_signal} (${data.consensus_score}%)`;
-        consensusEl.className = `card-value signal-${data.consensus_signal}`;
+        if (data.consensus_signal) {
+          consensusEl.innerText = `${data.consensus_signal} (${data.consensus_score ?? 0}%)`;
+          consensusEl.className = `card-value signal-${data.consensus_signal}`;
+        }
 
         // Mise à jour des probabilités XGBoost
-        document.getElementById("prob-buy").innerText = `${data.prob_buy}%`;
-        document.getElementById("prob-sell").innerText = `${data.prob_sell}%`;
+        document.getElementById("prob-buy").innerText = `${data.prob_buy ?? 0}%`;
+        document.getElementById("prob-sell").innerText = `${data.prob_sell ?? 0}%`;
 
         // Tendance H1 & Positions
-        document.getElementById("trend-h1").innerText = data.trend_h1;
-        document.getElementById("open-pos").innerText = data.open_positions;
+        document.getElementById("trend-h1").innerText = data.trend_h1 ?? "--";
+        
+        // Gestion des positions ouvertes
+        const posCount = Array.isArray(data.open_positions) ? data.open_positions.length : (data.open_positions ?? 0);
+        document.getElementById("open-pos").innerText = posCount;
 
       } catch (err) {
         console.error("Erreur de connexion à l'API :", err);
