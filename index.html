@@ -3,20 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vortex_IA Cockpit Pro</title>
+    <title>Vortex_IA | Institutional Cockpit</title>
     <!-- Script Telegram Web App -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --card-sub-bg: rgba(255, 255, 255, 0.03);
-            --text-color: #f8fafc;
-            --accent-green: #22c55e;
-            --accent-red: #ef4444;
-            --accent-blue: #38bdf8;
-            --text-muted: #94a3b8;
-            --border-color: #334155;
+            --bg-color: #0b0f19;
+            --card-bg: #131c31;
+            --card-sub-bg: rgba(255, 255, 255, 0.02);
+            --text-color: #f1f5f9;
+            --accent-green: #10b981;
+            --accent-red: #f43f5e;
+            --accent-blue: #0ea5e9;
+            --accent-purple: #8b5cf6;
+            --text-muted: #64748b;
+            --border-color: rgba(255, 255, 255, 0.06);
+            --border-card: rgba(255, 255, 255, 0.08);
         }
 
         body {
@@ -24,8 +26,9 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
-            padding: 12px;
+            padding: 14px;
             box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
         }
 
         .container {
@@ -37,23 +40,49 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         h1 {
-            font-size: 1.1rem;
-            color: var(--accent-blue);
+            font-size: 1rem;
+            color: var(--text-color);
             margin: 0;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        h1 span {
+            color: var(--accent-blue);
         }
 
         .badge-status {
-            background: rgba(34, 197, 94, 0.15);
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
             color: var(--accent-green);
             padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: bold;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-status::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent-green);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent-green);
         }
 
         .grid {
@@ -79,9 +108,22 @@
 
         .card {
             background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--border-card);
+            border-radius: 14px;
+            padding: 14px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--border-card), transparent);
         }
 
         .card.full {
@@ -89,83 +131,105 @@
         }
 
         .card h3 {
-            margin: 0 0 6px 0;
-            font-size: 0.75rem;
+            margin: 0 0 8px 0;
+            font-size: 0.7rem;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
+            font-weight: 600;
         }
 
         .card .value {
-            font-size: 1.3rem;
-            font-weight: bold;
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
         .stat-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 5px;
-            font-size: 0.9rem;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
         }
 
-        .neutral { color: #eab308; }
-        .buy { color: var(--accent-green); }
-        .sell { color: var(--accent-red); }
+        .stat-row span {
+            color: var(--text-muted);
+        }
+
+        .stat-row strong {
+            font-weight: 600;
+        }
+
+        .neutral { color: #f59e0b; }
+        .buy { color: var(--accent-green); font-weight: 700; }
+        .sell { color: var(--accent-red); font-weight: 700; }
 
         /* Performance Boxes */
         .pnl-box {
             background: var(--card-sub-bg);
-            padding: 8px;
-            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            padding: 10px 8px;
+            border-radius: 10px;
             text-align: center;
         }
         .pnl-box span {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--text-muted);
             display: block;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
         }
         .pnl-box strong {
             font-size: 0.95rem;
             display: block;
-            margin-top: 2px;
+            font-weight: 700;
         }
 
-        /* Barre de répartition des agents */
+        /* Agents Progress Bar */
         .agents-bar {
             display: flex;
-            height: 8px;
-            border-radius: 4px;
+            height: 6px;
+            border-radius: 3px;
             overflow: hidden;
-            background: #334155;
-            margin-top: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            margin-top: 10px;
+            gap: 2px;
         }
-        .agent-buy-bar { background-color: var(--accent-green); }
-        .agent-neut-bar { background-color: #64748b; }
-        .agent-sell-bar { background-color: var(--accent-red); }
+        .agent-buy-bar { background: var(--accent-green); border-radius: 3px 0 0 3px; transition: width 0.4s ease; }
+        .agent-neut-bar { background: #475569; transition: width 0.4s ease; }
+        .agent-sell-bar { background: var(--accent-red); border-radius: 0 3px 3px 0; transition: width 0.4s ease; }
 
         /* Table positions */
         table {
             width: 100%;
             text-align: left;
             border-collapse: collapse;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
+            margin-top: 4px;
         }
         th {
             color: var(--text-muted);
             border-bottom: 1px solid var(--border-color);
-            padding-bottom: 6px;
-            font-size: 0.75rem;
+            padding-bottom: 8px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
         td {
-            padding: 6px 0;
+            padding: 10px 0;
             border-bottom: 1px solid var(--border-color);
+        }
+        tr:last-child td {
+            border-bottom: none;
         }
 
         .footer {
             text-align: center;
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             color: var(--text-muted);
-            margin-top: 15px;
+            margin-top: 20px;
+            letter-spacing: 0.5px;
         }
     </style>
 </head>
@@ -173,7 +237,9 @@
 
     <div class="container">
         <header>
-            <h1>⚡ VORTEX_IA COCKPIT</h1>
+            <div class="brand">
+                <h1>VORTEX<span>_IA</span></h1>
+            </div>
             <div id="connection-status" class="badge-status">Connexion...</div>
         </header>
 
@@ -182,19 +248,19 @@
             <div class="card">
                 <h3>Équité (Equity)</h3>
                 <div class="value" id="equity">-- $</div>
-                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Solde : <span id="balance">--</span> $</div>
+                <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 6px;">Solde : <span id="balance" style="color:var(--text-color); font-weight:500;">--</span> $</div>
             </div>
             <div class="card">
                 <h3>Drawdown Actuel</h3>
                 <div class="value" id="drawdown" style="color: var(--accent-green);">0%</div>
-                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">PnL Flottant : <span id="pnl">+$0</span></div>
+                <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 6px;">PnL Flottant : <span id="pnl" style="font-weight:500;">+$0</span></div>
             </div>
         </div>
 
         <!-- Performance Stats (WinRate & Profit Factor) -->
         <div class="card full" style="margin-bottom: 12px;">
             <h3>Statistiques & Performance</h3>
-            <div class="grid-2" style="margin-top:0;">
+            <div class="grid-2" style="margin-top:4px;">
                 <div class="pnl-box">
                     <span>WIN RATE</span>
                     <strong id="winrate" style="color: var(--accent-green);">0%</strong>
@@ -209,9 +275,9 @@
         <!-- Bénéfices PnL (Aujourd'hui, Semaine, Mois, Année) -->
         <div class="card full" style="margin-bottom: 12px;">
             <h3>Bénéfices Réalisés (PnL)</h3>
-            <div class="grid-4">
+            <div class="grid-4" style="margin-top: 4px;">
                 <div class="pnl-box">
-                    <span>AUJOURD'HUI</span>
+                    <span>JOUR</span>
                     <strong id="pnl-today">+0.00 $</strong>
                 </div>
                 <div class="pnl-box">
@@ -232,7 +298,7 @@
         <!-- Analyse IA & Tendances -->
         <div class="card full" style="margin-bottom: 12px;">
             <h3>Analyse IA & Stratégie</h3>
-            <div class="stat-row">
+            <div class="stat-row" style="margin-top: 4px;">
                 <span>Consensus Stratégique :</span>
                 <strong id="consensus" class="neutral">NEUTRAL</strong>
             </div>
@@ -240,13 +306,13 @@
                 <span>Tendance H1 :</span>
                 <strong id="trend-h1" class="neutral">NEUTRAL</strong>
             </div>
-            <div class="grid" style="margin-top: 10px; margin-bottom: 0;">
+            <div class="grid" style="margin-top: 12px; margin-bottom: 0;">
                 <div class="pnl-box">
-                    <span>Prob. Achat</span>
+                    <span>Probabilité Achat</span>
                     <strong id="prob-buy" style="color:var(--accent-green);">0%</strong>
                 </div>
                 <div class="pnl-box">
-                    <span>Prob. Vente</span>
+                    <span>Probabilité Vente</span>
                     <strong id="prob-sell" style="color:var(--accent-red);">0%</strong>
                 </div>
             </div>
@@ -255,7 +321,7 @@
         <!-- Répartition des 14 Agents -->
         <div class="card full" style="margin-bottom: 12px;">
             <h3>Répartition des 14 Agents</h3>
-            <div class="stat-row" style="font-size: 0.8rem;">
+            <div class="stat-row" style="font-size: 0.78rem; margin-bottom: 4px;">
                 <span style="color:var(--accent-green);">Achat: <b id="agents-buy">0</b></span>
                 <span style="color:var(--text-muted);">Neutre: <b id="agents-neut">0</b></span>
                 <span style="color:var(--accent-red);">Vente: <b id="agents-sell">0</b></span>
@@ -270,13 +336,13 @@
         <!-- Positions en cours -->
         <div class="card full">
             <h3 id="positions-title">Positions en cours (0)</h3>
-            <div id="positions-container" style="font-size: 0.85rem; color: var(--text-muted); text-align: center; padding: 8px;">
+            <div id="positions-container" style="font-size: 0.82rem; color: var(--text-muted); text-align: center; padding: 12px;">
                 Aucune position active
             </div>
         </div>
 
         <div class="footer">
-            Mise à jour automatique en direct • Vortex_IA Engine
+            INSTITUTIONAL TRADING ENGINE • REAL-TIME TELEMETRY
         </div>
     </div>
 
@@ -365,14 +431,14 @@
 
                 if (openPos.length > 0) {
                     let html = '<table>';
-                    html += '<tr><th>Type</th><th>Lots</th><th>Prix</th><th>Profit</th></tr>';
+                    html += '<tr><th>TYPE</th><th>LOTS</th><th>PRIX</th><th>PROFIT</th></tr>';
                     openPos.forEach(p => {
                         const color = getPnLColor(p.profit);
                         html += `<tr>
-                            <td style="color:${p.type === 'BUY' ? 'var(--accent-green)' : 'var(--accent-red)'}; font-weight:bold;">${p.type}</td>
+                            <td style="color:${p.type === 'BUY' ? 'var(--accent-green)' : 'var(--accent-red)'}; font-weight:700;">${p.type}</td>
                             <td>${p.volume}</td>
                             <td>${p.price_open}</td>
-                            <td style="color:${color}; font-weight:bold;">${p.profit >= 0 ? '+' : ''}${p.profit.toFixed(2)} $</td>
+                            <td style="color:${color}; font-weight:700;">${p.profit >= 0 ? '+' : ''}${p.profit.toFixed(2)} $</td>
                         </tr>`;
                     });
                     html += '</table>';
@@ -381,26 +447,25 @@
                     posContainer.innerHTML = 'Aucune position active';
                 }
 
-                document.getElementById('connection-status').className = 'badge-status';
-                document.getElementById('connection-status').innerText = "VPS Link OK";
+                const statusEl = document.getElementById('connection-status');
+                statusEl.className = 'badge-status';
+                statusEl.style.background = 'rgba(16, 185, 129, 0.1)';
+                statusEl.style.borderColor = 'rgba(16, 185, 129, 0.2)';
+                statusEl.style.color = 'var(--accent-green)';
+                statusEl.innerText = "VPS Link OK";
 
             } catch (error) {
                 console.error("Erreur MiniApp :", error);
                 const statusEl = document.getElementById('connection-status');
-                statusEl.style.background = 'rgba(239, 68, 68, 0.15)';
+                statusEl.style.background = 'rgba(244, 63, 94, 0.1)';
+                statusEl.style.borderColor = 'rgba(244, 63, 94, 0.2)';
                 statusEl.style.color = 'var(--accent-red)';
                 statusEl.innerText = "VPS Hors Ligne";
             }
         }
 
-        // Rafraîchissement des données toutes les 3 secondes
         setInterval(updateDashboard, 3000);
         updateDashboard();
-
-        // Rafraîchissement complet de la page toutes les 3 secondes
-        setInterval(() => {
-            location.reload();
-        }, 3000);
     </script>
 </body>
 </html>
