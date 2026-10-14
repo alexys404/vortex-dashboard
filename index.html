@@ -39,7 +39,7 @@
         </div>
     </div>
 
-    <!-- PERFORMANCE (WIN RATE REMPLACE LE RISK) -->
+    <!-- PERFORMANCES (WIN RATE & PROFIT FACTOR) -->
     <div class="card p-3 space-y-2">
         <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider">🛡️ Performances & Statistiques</h2>
         <div class="grid grid-cols-3 gap-2 text-center pt-1">
@@ -108,7 +108,6 @@
             Telegram.WebApp.expand();
         }
 
-        // Initialisation propre du graphique Chart.js avec échelles dynamiques
         const ctx = document.getElementById('equityChart').getContext('2d');
         const equityChart = new Chart(ctx, {
             type: 'line',
@@ -134,7 +133,8 @@
                     y: { 
                         grid: { color: '#1f2937' }, 
                         ticks: { color: '#6b7280', font: { size: 9 } },
-                        suggestedMin: 1000 // S'adapte autour du capital
+                        suggestedMin: 1000,
+                        suggestedMax: 1100
                     }
                 }
             }
@@ -145,10 +145,9 @@
 
         async function fetchRealtimeData() {
             try {
-                const response = await fetch('http://localhost:8000/api/status');
+                const response = await fetch('http://51.195.164.187:8000/api/status');
                 const data = await response.json();
 
-                // Mise à jour des textes
                 document.getElementById('valEquity').textContent = `$${data.equity}`;
                 document.getElementById('valBalance').textContent = `Balance: $${data.balance}`;
                 document.getElementById('valDd').textContent = `${data.drawdown_pct}%`;
@@ -167,24 +166,22 @@
                 document.getElementById('barNeutral').style.width = `${(data.agents_neutral / total) * 100}%`;
                 document.getElementById('barSell').style.width = `${(data.agents_sell / total) * 100}%`;
 
-                // Correction du bug du graphique : Ajout dynamique de points pour faire bouger la ligne
                 const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 
-                // On évite les doublons si l'équité n'a pas bougé à la même seconde, ou on force l'ajout
-                chartLabels.push(now);
-                chartData.push(data.equity);
+                if (chartData.length === 0 || chartData[chartData.length - 1] !== data.equity || chartLabels.length < 5) {
+                    chartLabels.push(now);
+                    chartData.push(data.equity);
 
-                // Garder les 20 derniers points max pour un effet fluide
-                if (chartLabels.length > 20) {
-                    chartLabels.shift();
-                    chartData.shift();
+                    if (chartLabels.length > 20) {
+                        chartLabels.shift();
+                        chartData.shift();
+                    }
+
+                    equityChart.data.labels = chartLabels;
+                    equityChart.data.datasets[0].data = chartData;
+                    equityChart.update();
                 }
 
-                equityChart.data.labels = chartLabels;
-                equityChart.data.datasets[0].data = chartData;
-                equityChart.update();
-
-                // Positions ouvertes
                 const container = document.getElementById('positionsContainer');
                 if (data.open_positions && data.open_positions.length > 0) {
                     container.innerHTML = data.open_positions.map(p => `
