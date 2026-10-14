@@ -3,315 +3,326 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vortex_IA | Institutional Cockpit</title>
+    <title>Vortex_IA | Institutional Terminal</title>
     <!-- Script Telegram Web App -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --bg-color: #0b0f19;
-            --card-bg: #131c31;
-            --card-sub-bg: rgba(255, 255, 255, 0.02);
-            --text-color: #f1f5f9;
-            --accent-green: #10b981;
-            --accent-red: #f43f5e;
-            --accent-blue: #0ea5e9;
-            --accent-purple: #8b5cf6;
+            --bg-color: #07090e;
+            --card-bg: #0f172a;
+            --card-border: rgba(255, 255, 255, 0.07);
+            --card-border-glow: rgba(56, 189, 248, 0.15);
+            --text-main: #f8fafc;
             --text-muted: #64748b;
-            --border-color: rgba(255, 255, 255, 0.06);
-            --border-card: rgba(255, 255, 255, 0.08);
+            --accent-green: #10b981;
+            --accent-green-bg: rgba(16, 185, 129, 0.1);
+            --accent-red: #f43f5e;
+            --accent-red-bg: rgba(244, 63, 94, 0.1);
+            --accent-blue: #38bdf8;
+            --accent-yellow: #fbbf24;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
-            color: var(--text-color);
+            color: var(--text-main);
             margin: 0;
-            padding: 14px;
+            padding: 12px;
             box-sizing: border-box;
             -webkit-font-smoothing: antialiased;
         }
 
         .container {
-            max-width: 650px;
+            max-width: 600px;
             margin: 0 auto;
         }
 
+        /* Header Professionnel */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--border-color);
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-bottom: 12px;
         }
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        h1 {
-            font-size: 1rem;
-            color: var(--text-color);
+        .brand-title {
+            font-size: 0.95rem;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            color: var(--text-main);
             margin: 0;
-            letter-spacing: 1px;
-            font-weight: 700;
         }
 
-        h1 span {
+        .brand-title span {
             color: var(--accent-blue);
         }
 
         .badge-status {
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.2);
+            background: var(--accent-green-bg);
+            border: 1px solid rgba(16, 185, 129, 0.3);
             color: var(--accent-green);
             padding: 4px 10px;
             border-radius: 20px;
             font-size: 0.7rem;
-            font-weight: 600;
+            font-weight: 700;
             display: flex;
             align-items: center;
             gap: 6px;
+            letter-spacing: 0.5px;
         }
 
-        .badge-status::before {
-            content: '';
+        .pulse-dot {
             width: 6px;
             height: 6px;
             background-color: var(--accent-green);
             border-radius: 50%;
             box-shadow: 0 0 8px var(--accent-green);
+            animation: pulse 2s infinite;
         }
 
-        .grid {
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 12px var(--accent-green); }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+
+        /* Grilles & Cartes */
+        .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
-            margin-bottom: 12px;
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            margin-top: 8px;
+            margin-bottom: 10px;
         }
 
         .grid-4 {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin-top: 8px;
+            gap: 6px;
+            margin-top: 6px;
         }
 
         .card {
             background-color: var(--card-bg);
-            border: 1px solid var(--border-card);
-            border-radius: 14px;
-            padding: 14px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 12px 14px;
             position: relative;
-            overflow: hidden;
-        }
-
-        .card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--border-card), transparent);
-        }
-
-        .card.full {
-            grid-column: span 2;
         }
 
         .card h3 {
-            margin: 0 0 8px 0;
-            font-size: 0.7rem;
+            margin: 0 0 6px 0;
+            font-size: 0.68rem;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.8px;
-            font-weight: 600;
+            letter-spacing: 1px;
+            font-weight: 700;
         }
 
         .card .value {
-            font-size: 1.4rem;
-            font-weight: 700;
+            font-size: 1.35rem;
+            font-weight: 800;
             letter-spacing: -0.5px;
+            font-variant-numeric: tabular-nums;
         }
 
-        .stat-row {
+        .sub-text {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Boîtes de statistiques */
+        .stat-box {
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid var(--card-border);
+            padding: 8px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-box span {
+            font-size: 0.62rem;
+            color: var(--text-muted);
+            display: block;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .stat-box strong {
+            font-size: 0.88rem;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Lignes de données structurées */
+        .data-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
-            font-size: 0.85rem;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            font-size: 0.82rem;
         }
 
-        .stat-row span {
+        .data-row:last-child {
+            border-bottom: none;
+        }
+
+        .data-row span {
             color: var(--text-muted);
         }
 
-        .stat-row strong {
-            font-weight: 600;
-        }
-
-        .neutral { color: #f59e0b; }
-        .buy { color: var(--accent-green); font-weight: 700; }
-        .sell { color: var(--accent-red); font-weight: 700; }
-
-        /* Performance Boxes */
-        .pnl-box {
-            background: var(--card-sub-bg);
-            border: 1px solid var(--border-color);
-            padding: 10px 8px;
-            border-radius: 10px;
-            text-align: center;
-        }
-        .pnl-box span {
-            font-size: 0.65rem;
-            color: var(--text-muted);
-            display: block;
-            margin-bottom: 4px;
-            letter-spacing: 0.5px;
-        }
-        .pnl-box strong {
-            font-size: 0.95rem;
-            display: block;
+        .data-row strong {
             font-weight: 700;
+            font-variant-numeric: tabular-nums;
         }
 
-        /* Agents Progress Bar */
-        .agents-bar {
+        /* Barres de probabilité / agents */
+        .progress-container {
+            margin-top: 8px;
+        }
+
+        .progress-bar-wrapper {
             display: flex;
             height: 6px;
             border-radius: 3px;
             overflow: hidden;
             background: rgba(255, 255, 255, 0.05);
-            margin-top: 10px;
+            margin-top: 6px;
             gap: 2px;
         }
-        .agent-buy-bar { background: var(--accent-green); border-radius: 3px 0 0 3px; transition: width 0.4s ease; }
-        .agent-neut-bar { background: #475569; transition: width 0.4s ease; }
-        .agent-sell-bar { background: var(--accent-red); border-radius: 0 3px 3px 0; transition: width 0.4s ease; }
 
-        /* Table positions */
+        .bar-buy { background: var(--accent-green); transition: width 0.4s ease; }
+        .bar-neut { background: #475569; transition: width 0.4s ease; }
+        .bar-sell { background: var(--accent-red); transition: width 0.4s ease; }
+
+        /* Tableau des positions */
         table {
             width: 100%;
             text-align: left;
             border-collapse: collapse;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             margin-top: 4px;
         }
+
         th {
             color: var(--text-muted);
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 8px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 6px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
         }
+
         td {
-            padding: 10px 0;
-            border-bottom: 1px solid var(--border-color);
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            font-variant-numeric: tabular-nums;
         }
+
         tr:last-child td {
             border-bottom: none;
         }
 
+        /* Couleurs textuelles */
+        .neutral { color: var(--accent-yellow); font-weight: 700; }
+        .buy { color: var(--accent-green); font-weight: 700; }
+        .sell { color: var(--accent-red); font-weight: 700; }
+
         .footer {
             text-align: center;
-            font-size: 0.68rem;
+            font-size: 0.65rem;
             color: var(--text-muted);
-            margin-top: 20px;
-            letter-spacing: 0.5px;
+            margin-top: 16px;
+            letter-spacing: 1px;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
+        <!-- Header -->
         <header>
-            <div class="brand">
-                <h1>VORTEX<span>_IA</span></h1>
+            <h1 class="brand-title">VORTEX<span>_IA</span></h1>
+            <div id="connection-status" class="badge-status">
+                <div class="pulse-dot"></div>
+                <span>CONNEXION...</span>
             </div>
-            <div id="connection-status" class="badge-status">Connexion...</div>
         </header>
 
-        <!-- Solde & Gestion du Risque -->
-        <div class="grid">
+        <!-- Solde & Risque -->
+        <div class="grid-2">
             <div class="card">
                 <h3>Équité (Equity)</h3>
                 <div class="value" id="equity">-- $</div>
-                <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 6px;">Solde : <span id="balance" style="color:var(--text-color); font-weight:500;">--</span> $</div>
+                <div class="sub-text">Solde : <span id="balance" style="color:var(--text-main); font-weight:600;">--</span> $</div>
             </div>
             <div class="card">
                 <h3>Drawdown Actuel</h3>
                 <div class="value" id="drawdown" style="color: var(--accent-green);">0%</div>
-                <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 6px;">PnL Flottant : <span id="pnl" style="font-weight:500;">+$0</span></div>
+                <div class="sub-text">PnL Flottant : <span id="pnl" style="font-weight:600;">+$0</span></div>
             </div>
         </div>
 
-        <!-- Performance Stats (WinRate & Profit Factor) -->
-        <div class="card full" style="margin-bottom: 12px;">
+        <!-- Performance -->
+        <div class="card" style="margin-bottom: 10px;">
             <h3>Statistiques & Performance</h3>
-            <div class="grid-2" style="margin-top:4px;">
-                <div class="pnl-box">
+            <div class="grid-2" style="margin-top: 8px;">
+                <div class="stat-box">
                     <span>WIN RATE</span>
                     <strong id="winrate" style="color: var(--accent-green);">0%</strong>
                 </div>
-                <div class="pnl-box">
+                <div class="stat-box">
                     <span>PROFIT FACTOR</span>
                     <strong id="profit-factor" style="color: var(--accent-blue);">0.00</strong>
                 </div>
             </div>
         </div>
 
-        <!-- Bénéfices PnL (Aujourd'hui, Semaine, Mois, Année) -->
-        <div class="card full" style="margin-bottom: 12px;">
+        <!-- PnL Réalisé -->
+        <div class="card" style="margin-bottom: 10px;">
             <h3>Bénéfices Réalisés (PnL)</h3>
-            <div class="grid-4" style="margin-top: 4px;">
-                <div class="pnl-box">
+            <div class="grid-4">
+                <div class="stat-box">
                     <span>JOUR</span>
                     <strong id="pnl-today">+0.00 $</strong>
                 </div>
-                <div class="pnl-box">
+                <div class="stat-box">
                     <span>SEMAINE</span>
                     <strong id="pnl-week">+0.00 $</strong>
                 </div>
-                <div class="pnl-box">
+                <div class="stat-box">
                     <span>MOIS</span>
                     <strong id="pnl-month">+0.00 $</strong>
                 </div>
-                <div class="pnl-box">
+                <div class="stat-box">
                     <span>ANNÉE</span>
                     <strong id="pnl-year">+0.00 $</strong>
                 </div>
             </div>
         </div>
 
-        <!-- Analyse IA & Tendances -->
-        <div class="card full" style="margin-bottom: 12px;">
+        <!-- Analyse IA & Consensus -->
+        <div class="card" style="margin-bottom: 10px;">
             <h3>Analyse IA & Stratégie</h3>
-            <div class="stat-row" style="margin-top: 4px;">
+            <div class="data-row" style="margin-top: 4px;">
                 <span>Consensus Stratégique :</span>
                 <strong id="consensus" class="neutral">NEUTRAL</strong>
             </div>
-            <div class="stat-row">
+            <div class="data-row">
                 <span>Tendance H1 :</span>
                 <strong id="trend-h1" class="neutral">NEUTRAL</strong>
             </div>
-            <div class="grid" style="margin-top: 12px; margin-bottom: 0;">
-                <div class="pnl-box">
+            <div class="grid-2" style="margin-top: 8px; margin-bottom: 0;">
+                <div class="stat-box">
                     <span>Probabilité Achat</span>
                     <strong id="prob-buy" style="color:var(--accent-green);">0%</strong>
                 </div>
-                <div class="pnl-box">
+                <div class="stat-box">
                     <span>Probabilité Vente</span>
                     <strong id="prob-sell" style="color:var(--accent-red);">0%</strong>
                 </div>
@@ -319,30 +330,30 @@
         </div>
 
         <!-- Répartition des 14 Agents -->
-        <div class="card full" style="margin-bottom: 12px;">
+        <div class="card" style="margin-bottom: 10px;">
             <h3>Répartition des 14 Agents</h3>
-            <div class="stat-row" style="font-size: 0.78rem; margin-bottom: 4px;">
+            <div class="data-row" style="font-size: 0.78rem; border-bottom: none; padding-bottom: 2px;">
                 <span style="color:var(--accent-green);">Achat: <b id="agents-buy">0</b></span>
                 <span style="color:var(--text-muted);">Neutre: <b id="agents-neut">0</b></span>
                 <span style="color:var(--accent-red);">Vente: <b id="agents-sell">0</b></span>
             </div>
-            <div class="agents-bar">
-                <div id="bar-buy" class="agent-buy-bar" style="width: 0%;"></div>
-                <div id="bar-neut" class="agent-neut-bar" style="width: 100%;"></div>
-                <div id="bar-sell" class="agent-sell-bar" style="width: 0%;"></div>
+            <div class="progress-bar-wrapper">
+                <div id="bar-buy" class="bar-buy" style="width: 0%;"></div>
+                <div id="bar-neut" class="bar-neut" style="width: 100%;"></div>
+                <div id="bar-sell" class="bar-sell" style="width: 0%;"></div>
             </div>
         </div>
 
         <!-- Positions en cours -->
-        <div class="card full">
+        <div class="card">
             <h3 id="positions-title">Positions en cours (0)</h3>
-            <div id="positions-container" style="font-size: 0.82rem; color: var(--text-muted); text-align: center; padding: 12px;">
+            <div id="positions-container" style="font-size: 0.8rem; color: var(--text-muted); text-align: center; padding: 12px;">
                 Aucune position active
             </div>
         </div>
 
         <div class="footer">
-            INSTITUTIONAL TRADING ENGINE • REAL-TIME TELEMETRY
+            INSTITUTIONAL QUANT TERMINAL • REAL-TIME TELEMETRY
         </div>
     </div>
 
@@ -379,11 +390,11 @@
                 document.getElementById('pnl').style.color = getPnLColor(data.pnl);
                 document.getElementById('drawdown').innerText = data.drawdown_pct + ' %';
 
-                // 2. Performance (WinRate / Profit Factor)
+                // 2. Performance
                 document.getElementById('winrate').innerText = (data.winrate || 0) + ' %';
                 document.getElementById('profit-factor').innerText = (data.profit_factor || 0).toFixed(2);
 
-                // 3. Bénéfices PnL
+                // 3. PnL Périodes
                 const pToday = data.pnl_today || 0;
                 const pWeek = data.pnl_week || 0;
                 const pMonth = data.pnl_month || 0;
@@ -435,10 +446,10 @@
                     openPos.forEach(p => {
                         const color = getPnLColor(p.profit);
                         html += `<tr>
-                            <td style="color:${p.type === 'BUY' ? 'var(--accent-green)' : 'var(--accent-red)'}; font-weight:700;">${p.type}</td>
+                            <td style="color:${p.type === 'BUY' ? 'var(--accent-green)' : 'var(--accent-red)'}; font-weight:800;">${p.type}</td>
                             <td>${p.volume}</td>
                             <td>${p.price_open}</td>
-                            <td style="color:${color}; font-weight:700;">${p.profit >= 0 ? '+' : ''}${p.profit.toFixed(2)} $</td>
+                            <td style="color:${color}; font-weight:800;">${p.profit >= 0 ? '+' : ''}${p.profit.toFixed(2)} $</td>
                         </tr>`;
                     });
                     html += '</table>';
@@ -449,18 +460,16 @@
 
                 const statusEl = document.getElementById('connection-status');
                 statusEl.className = 'badge-status';
-                statusEl.style.background = 'rgba(16, 185, 129, 0.1)';
-                statusEl.style.borderColor = 'rgba(16, 185, 129, 0.2)';
-                statusEl.style.color = 'var(--accent-green)';
-                statusEl.innerText = "VPS Link OK";
+                statusEl.innerHTML = '<div class="pulse-dot"></div><span>VPS LINK OK</span>';
 
             } catch (error) {
                 console.error("Erreur MiniApp :", error);
                 const statusEl = document.getElementById('connection-status');
-                statusEl.style.background = 'rgba(244, 63, 94, 0.1)';
-                statusEl.style.borderColor = 'rgba(244, 63, 94, 0.2)';
+                statusEl.className = 'badge-status';
+                statusEl.style.background = 'var(--accent-red-bg)';
+                statusEl.style.borderColor = 'rgba(244, 63, 94, 0.3)';
                 statusEl.style.color = 'var(--accent-red)';
-                statusEl.innerText = "VPS Hors Ligne";
+                statusEl.innerHTML = '<div style="width:6px; height:6px; background:var(--accent-red); border-radius:50%;"></div><span>HORS LIGNE</span>';
             }
         }
 
