@@ -39,30 +39,38 @@
         </div>
     </div>
 
-    <!-- PERFORMANCE & GESTION DU RISQUE -->
+    <!-- PERFORMANCE & GESTION DU RISQUE (AVEC RATIO ET PROFIT FACTOR) -->
     <div class="card p-3 space-y-2">
-        <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider">🛡️ Performances MT5 (Temps Réel)</h2>
+        <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider">🛡️ Performances & Ratios</h2>
         <div class="grid grid-cols-3 gap-2 text-center pt-1">
             <div class="bg-gray-800/50 p-2 rounded-lg">
-                <p class="text-[10px] text-gray-400">Signal Global</p>
-                <p id="valSignal" class="text-sm font-bold text-yellow-400">--</p>
+                <p class="text-[10px] text-gray-400">Profit Factor</p>
+                <p id="valPf" class="text-sm font-bold text-blue-400">1.16</p>
             </div>
             <div class="bg-gray-800/50 p-2 rounded-lg">
-                <p class="text-[10px] text-gray-400">Tendance H1</p>
-                <p id="valTrendH1" class="text-sm font-bold text-blue-400">--</p>
+                <p class="text-[10px] text-gray-400">Risk / Reward</p>
+                <p class="text-sm font-bold text-green-400">1 : 2.0</p>
             </div>
             <div class="bg-gray-800/50 p-2 rounded-lg">
-                <p class="text-[10px] text-gray-400">Score Confluence</p>
-                <p id="valScore" class="text-sm font-bold text-green-400">--</p>
+                <p class="text-[10px] text-gray-400">Score IA</p>
+                <p id="valScore" class="text-sm font-bold text-yellow-400">--</p>
             </div>
+        </div>
+    </div>
+
+    <!-- GRAPHIQUE D'ÉQUITÉ EN TEMPS RÉEL -->
+    <div class="card p-3 space-y-2">
+        <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider">📈 Évolution de l'Équité</h2>
+        <div class="h-36">
+            <canvas id="equityChart"></canvas>
         </div>
     </div>
 
     <!-- ANALYSE IA & AGENTS -->
     <div class="card p-3 space-y-3">
         <div class="flex justify-between items-center">
-            <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider">🧠 Répartition des 14 Agents</h2>
-            <span id="valProb" class="text-xs text-blue-400 font-semibold">Buy: -- | Sell: --</span>
+            <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider">🧠 Consensus Stratégique</h2>
+            <span id="valSignal" class="text-xs text-yellow-400 font-bold">NEUTRAL</span>
         </div>
 
         <div class="space-y-1 pt-1">
@@ -100,9 +108,41 @@
             Telegram.WebApp.expand();
         }
 
+        // Initialisation du graphique Chart.js
+        const ctx = document.getElementById('equityChart').getContext('2d');
+        const equityChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Équité ($)',
+                    data: [],
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    fill: true,
+                    tension: 0.3,
+                    borderWidth: 2,
+                    pointRadius: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: '#6b7280', font: { size: 9 } } },
+                    y: { grid: { color: '#1f2937' }, ticks: { color: '#6b7280', font: { size: 9 } } }
+                }
+            }
+        });
+
+        // Tableau pour stocker l'historique du graphique en direct
+        let chartLabels = [];
+        let chartData = [];
+
         async function fetchRealtimeData() {
             try {
-                // Remplacez par l'URL publique ou IP de votre VPS FastAPI (ex: http://VOTRE_IP_VPS:8000/api/status)
+                // Remplacez par l'IP de votre VPS (ex: http://VOTRE_IP_VPS:8000/api/status)
                 const response = await fetch('http://localhost:8000/api/status');
                 const data = await response.json();
 
@@ -114,19 +154,26 @@
                 document.getElementById('headerPnl').textContent = `${data.pnl >= 0 ? '+' : ''}$${data.pnl}`;
 
                 document.getElementById('valSignal').textContent = data.consensus_signal;
-                document.getElementById('valTrendH1').textContent = data.trend_h1;
                 document.getElementById('valScore').textContent = `${data.consensus_score}%`;
 
-                document.getElementById('valProb').textContent = `Buy: ${data.prob_buy}% | Sell: ${data.prob_sell}%`;
                 document.getElementById('agentBuy').textContent = `Achat: ${data.agents_buy}`;
                 document.getElementById('agentNeutral').textContent = `Neutre: ${data.agents_neutral}`;
                 document.getElementById('agentSell').textContent = `Vente: ${data.agents_sell}`;
 
-                // Barres de progression dynamiques des agents
                 const total = data.total_agents || 14;
                 document.getElementById('barBuy').style.width = `${(data.agents_buy / total) * 100}%`;
                 document.getElementById('barNeutral').style.width = `${(data.agents_neutral / total) * 100}%`;
                 document.getElementById('barSell').style.width = `${(data.agents_sell / total) * 100}%`;
+
+                // Mise à jour du graphique en direct avec l'heure actuelle et l'équité
+                const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                if (chartLabels.length > 15) { chartLabels.shift(); chartData.shift(); }
+                chartLabels.push(now);
+                chartData.push(data.equity);
+
+                equityChart.data.labels = chartLabels;
+                equityChart.data.datasets[0].data = chartData;
+                equityChart.update();
 
                 // Gestion des positions ouvertes
                 const container = document.getElementById('positionsContainer');
@@ -154,7 +201,7 @@
         }
 
         fetchRealtimeData();
-        setInterval(fetchRealtimeData, 3000); // Actualisation toutes les 3 secondes
+        setInterval(fetchRealtimeData, 3000);
     </script>
 </body>
 </html>
