@@ -123,31 +123,6 @@
             margin-top: 2px;
         }
 
-        /* Mini Calendar 7 Days */
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 6px;
-            margin-top: 8px;
-        }
-        .day-box {
-            background: var(--card-sub-bg);
-            border-radius: 8px;
-            padding: 8px 2px;
-            text-align: center;
-            border: 1px solid var(--border-color);
-        }
-        .day-box .day-name {
-            font-size: 0.65rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
-        .day-box .day-pnl {
-            font-size: 0.75rem;
-            font-weight: bold;
-            margin-top: 4px;
-        }
-
         /* Barre de répartition des agents */
         .agents-bar {
             display: flex;
@@ -255,14 +230,6 @@
             </div>
         </div>
 
-        <!-- Mini Calendrier (7 Derniers Jours) -->
-        <div class="card full" style="margin-bottom: 12px;">
-            <h3>Résultat des 7 Derniers Jours</h3>
-            <div class="calendar-grid" id="calendar-container">
-                <!-- Généré dynamiquement en JS -->
-            </div>
-        </div>
-
         <!-- Analyse IA & Tendances -->
         <div class="card full" style="margin-bottom: 12px;">
             <h3>Analyse IA & Stratégie</h3>
@@ -321,8 +288,7 @@
             tg.expand();
         }
 
-        // Remplace par l'IP de ton VPS si tu accèdes au dashboard hors local
-        const API_URL = "http://51.195.164.187:8000/api/status"; 
+        const API_URL = "https://remainder-trains-smaller-previous.trycloudflare.com/api/status"; 
 
         function formatPnL(val) {
             const prefix = val > 0 ? '+' : '';
@@ -371,23 +337,7 @@
                 document.getElementById('pnl-year').innerText = formatPnL(pYear);
                 document.getElementById('pnl-year').style.color = getPnLColor(pYear);
 
-                // 4. Mini Calendrier (7 jours)
-                const calContainer = document.getElementById('calendar-container');
-                if (data.daily_calendar && data.daily_calendar.length > 0) {
-                    let calHtml = '';
-                    data.daily_calendar.forEach(d => {
-                        const color = getPnLColor(d.pnl);
-                        calHtml += `
-                            <div class="day-box">
-                                <div class="day-name">${d.day_name}</div>
-                                <div class="day-pnl" style="color: ${color}">${d.pnl > 0 ? '+' : ''}${d.pnl.toFixed(1)}$</div>
-                            </div>
-                        `;
-                    });
-                    calContainer.innerHTML = calHtml;
-                }
-
-                // 5. Consensus & IA
+                // 4. Consensus & IA
                 const consensusEl = document.getElementById('consensus');
                 consensusEl.innerText = data.consensus_signal + ' (' + data.consensus_score + '%)';
                 consensusEl.className = data.consensus_signal === 'BUY' ? 'buy' : (data.consensus_signal === 'SELL' ? 'sell' : 'neutral');
@@ -399,7 +349,7 @@
                 document.getElementById('prob-buy').innerText = data.prob_buy + '%';
                 document.getElementById('prob-sell').innerText = data.prob_sell + '%';
 
-                // 6. Agents
+                // 5. Agents
                 document.getElementById('agents-buy').innerText = data.agents_buy;
                 document.getElementById('agents-neut').innerText = data.agents_neutral;
                 document.getElementById('agents-sell').innerText = data.agents_sell;
@@ -409,7 +359,7 @@
                 document.getElementById('bar-neut').style.width = (data.agents_neutral / total * 100) + '%';
                 document.getElementById('bar-sell').style.width = (data.agents_sell / total * 100) + '%';
 
-                // 7. Positions
+                // 6. Positions
                 const posContainer = document.getElementById('positions-container');
                 const posTitle = document.getElementById('positions-title');
                 const openPos = data.open_positions || [];
