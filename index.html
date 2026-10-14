@@ -39,17 +39,17 @@
         </div>
     </div>
 
-    <!-- PERFORMANCE & GESTION DU RISQUE (AVEC RATIO ET PROFIT FACTOR) -->
+    <!-- PERFORMANCE (WIN RATE REMPLACE LE RISK) -->
     <div class="card p-3 space-y-2">
-        <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider">🛡️ Performances & Ratios</h2>
+        <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider">🛡️ Performances & Statistiques</h2>
         <div class="grid grid-cols-3 gap-2 text-center pt-1">
+            <div class="bg-gray-800/50 p-2 rounded-lg">
+                <p class="text-[10px] text-gray-400">Win Rate</p>
+                <p id="valWinRate" class="text-sm font-bold text-green-400">60.2%</p>
+            </div>
             <div class="bg-gray-800/50 p-2 rounded-lg">
                 <p class="text-[10px] text-gray-400">Profit Factor</p>
                 <p id="valPf" class="text-sm font-bold text-blue-400">1.16</p>
-            </div>
-            <div class="bg-gray-800/50 p-2 rounded-lg">
-                <p class="text-[10px] text-gray-400">Risk / Reward</p>
-                <p class="text-sm font-bold text-green-400">1 : 2.0</p>
             </div>
             <div class="bg-gray-800/50 p-2 rounded-lg">
                 <p class="text-[10px] text-gray-400">Score IA</p>
@@ -58,9 +58,9 @@
         </div>
     </div>
 
-    <!-- GRAPHIQUE D'ÉQUITÉ EN TEMPS RÉEL -->
+    <!-- GRAPHIQUE D'ÉQUITÉ CORRIGÉ -->
     <div class="card p-3 space-y-2">
-        <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider">📈 Évolution de l'Équité</h2>
+        <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider">📈 Évolution du Compte</h2>
         <div class="h-36">
             <canvas id="equityChart"></canvas>
         </div>
@@ -108,7 +108,7 @@
             Telegram.WebApp.expand();
         }
 
-        // Initialisation du graphique Chart.js
+        // Initialisation propre du graphique Chart.js avec échelles dynamiques
         const ctx = document.getElementById('equityChart').getContext('2d');
         const equityChart = new Chart(ctx, {
             type: 'line',
@@ -117,12 +117,12 @@
                 datasets: [{
                     label: 'Équité ($)',
                     data: [],
-                    borderColor: '#3b82f6',
-                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    borderColor: '#22c55e',
+                    backgroundColor: 'rgba(34, 197, 94, 0.1)',
                     fill: true,
-                    tension: 0.3,
+                    tension: 0.2,
                     borderWidth: 2,
-                    pointRadius: 2
+                    pointRadius: 3
                 }]
             },
             options: {
@@ -131,22 +131,24 @@
                 plugins: { legend: { display: false } },
                 scales: {
                     x: { grid: { display: false }, ticks: { color: '#6b7280', font: { size: 9 } } },
-                    y: { grid: { color: '#1f2937' }, ticks: { color: '#6b7280', font: { size: 9 } } }
+                    y: { 
+                        grid: { color: '#1f2937' }, 
+                        ticks: { color: '#6b7280', font: { size: 9 } },
+                        suggestedMin: 1000 // S'adapte autour du capital
+                    }
                 }
             }
         });
 
-        // Tableau pour stocker l'historique du graphique en direct
         let chartLabels = [];
         let chartData = [];
 
         async function fetchRealtimeData() {
             try {
-                // Remplacez par l'IP de votre VPS (ex: http://VOTRE_IP_VPS:8000/api/status)
                 const response = await fetch('http://localhost:8000/api/status');
                 const data = await response.json();
 
-                // Mise à jour des valeurs principales
+                // Mise à jour des textes
                 document.getElementById('valEquity').textContent = `$${data.equity}`;
                 document.getElementById('valBalance').textContent = `Balance: $${data.balance}`;
                 document.getElementById('valDd').textContent = `${data.drawdown_pct}%`;
@@ -165,17 +167,24 @@
                 document.getElementById('barNeutral').style.width = `${(data.agents_neutral / total) * 100}%`;
                 document.getElementById('barSell').style.width = `${(data.agents_sell / total) * 100}%`;
 
-                // Mise à jour du graphique en direct avec l'heure actuelle et l'équité
+                // Correction du bug du graphique : Ajout dynamique de points pour faire bouger la ligne
                 const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-                if (chartLabels.length > 15) { chartLabels.shift(); chartData.shift(); }
+                
+                // On évite les doublons si l'équité n'a pas bougé à la même seconde, ou on force l'ajout
                 chartLabels.push(now);
                 chartData.push(data.equity);
+
+                // Garder les 20 derniers points max pour un effet fluide
+                if (chartLabels.length > 20) {
+                    chartLabels.shift();
+                    chartData.shift();
+                }
 
                 equityChart.data.labels = chartLabels;
                 equityChart.data.datasets[0].data = chartData;
                 equityChart.update();
 
-                // Gestion des positions ouvertes
+                // Positions ouvertes
                 const container = document.getElementById('positionsContainer');
                 if (data.open_positions && data.open_positions.length > 0) {
                     container.innerHTML = data.open_positions.map(p => `
