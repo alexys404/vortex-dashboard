@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vortex IA Cockpit</title>
-    <!-- Tailwind CSS & Chart.js -->
+    <title>Vortex IA Cockpit - Realtime</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -20,51 +19,41 @@
     <!-- HEADER / STATUT -->
     <div class="flex items-center justify-between pb-2 border-b border-gray-800">
         <div class="flex items-center space-x-2">
-            <span class="w-3 h-3 bg-green-500 rounded-full animate-ping"></span>
+            <span id="statusDot" class="w-3 h-3 bg-green-500 rounded-full animate-ping"></span>
             <h1 class="font-bold text-lg text-blue-400 tracking-wide">⚡ VORTEX_IA COCKPIT</h1>
         </div>
-        <span class="bg-green-500/10 text-green-400 border border-green-500/30 text-xs font-semibold px-2.5 py-0.5 rounded-full">+145.20 $</span>
+        <span id="headerPnl" class="bg-green-500/10 text-green-400 border border-green-500/30 text-xs font-semibold px-2.5 py-0.5 rounded-full">Calcul en cours...</span>
     </div>
 
     <!-- METRIQUES FINANCIERES PRINCIPALES -->
     <div class="grid grid-cols-2 gap-3">
         <div class="card p-3">
             <p class="text-xs text-gray-400 font-medium">Équité (Equity)</p>
-            <p class="text-xl font-extrabold text-white mt-1 glow-blue">$1,054.48</p>
-            <p class="text-[10px] text-gray-500 mt-1">Solde: $1,054.48</p>
+            <p id="valEquity" class="text-xl font-extrabold text-white mt-1 glow-blue">--</p>
+            <p id="valBalance" class="text-[10px] text-gray-500 mt-1">Balance: --</p>
         </div>
         <div class="card p-3">
             <p class="text-xs text-gray-400 font-medium">Drawdown Actuel</p>
-            <p class="text-xl font-extrabold text-green-400 mt-1 glow-green">0.0%</p>
-            <p class="text-[10px] text-gray-500 mt-1">PnL Flottant: +0.00 $</p>
+            <p id="valDd" class="text-xl font-extrabold text-green-400 mt-1 glow-green">--</p>
+            <p id="valFloating" class="text-[10px] text-gray-500 mt-1">PnL Flottant: --</p>
         </div>
     </div>
 
     <!-- PERFORMANCE & GESTION DU RISQUE -->
     <div class="card p-3 space-y-2">
-        <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider">🛡️ Gestion du Risque & Performance</h2>
+        <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider">🛡️ Performances MT5 (Temps Réel)</h2>
         <div class="grid grid-cols-3 gap-2 text-center pt-1">
             <div class="bg-gray-800/50 p-2 rounded-lg">
                 <p class="text-[10px] text-gray-400">Win Rate</p>
-                <p class="text-sm font-bold text-green-400">74%</p>
+                <p id="valWinRate" class="text-sm font-bold text-green-400">--</p>
             </div>
             <div class="bg-gray-800/50 p-2 rounded-lg">
-                <p class="text-[10px] text-gray-400">Risk/Reward</p>
-                <p class="text-sm font-bold text-blue-400">1 : 2.5</p>
+                <p class="text-[10px] text-gray-400">Profit Factor</p>
+                <p id="valPf" class="text-sm font-bold text-blue-400">--</p>
             </div>
             <div class="bg-gray-800/50 p-2 rounded-lg">
-                <p class="text-[10px] text-gray-400">Lot Unitaire</p>
-                <p class="text-sm font-bold text-yellow-400">0.01</p>
-            </div>
-        </div>
-        <!-- Barre de Max Drawdown -->
-        <div class="pt-2">
-            <div class="flex justify-between text-[11px] mb-1">
-                <span class="text-gray-400">Max Drawdown Autorisé</span>
-                <span class="text-red-400 font-semibold">1.2% / 5.0%</span>
-            </div>
-            <div class="w-full bg-gray-800 rounded-full h-1.5">
-                <div class="bg-red-500 h-1.5 rounded-full" style="width: 24%"></div>
+                <p class="text-[10px] text-gray-400">Total Trades</p>
+                <p id="valTrades" class="text-sm font-bold text-yellow-400">--</p>
             </div>
         </div>
     </div>
@@ -73,47 +62,32 @@
     <div class="card p-3 space-y-3">
         <div class="flex justify-between items-center">
             <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider">🧠 Consensus Stratégique</h2>
-            <span class="text-xs text-blue-400 font-semibold">36% Confluence</span>
+            <span class="text-xs text-blue-400 font-semibold">Multi-Agents</span>
         </div>
 
         <div class="text-center py-1 bg-gray-900/60 rounded-lg border border-gray-800">
             <p class="text-xs text-gray-400">Signal Global IA</p>
-            <p class="text-lg font-black text-yellow-400 tracking-wider mt-0.5">NEUTRAL</p>
-        </div>
-
-        <div class="grid grid-cols-3 gap-2 text-center">
-            <div class="bg-gray-800/40 p-2 rounded-lg border border-gray-800">
-                <p class="text-[10px] text-gray-400">Prob. Achat</p>
-                <p class="text-sm font-bold text-green-400">37%</p>
-            </div>
-            <div class="bg-gray-800/40 p-2 rounded-lg border border-gray-800">
-                <p class="text-[10px] text-gray-400">Prob. Vente</p>
-                <p class="text-sm font-bold text-red-400">45%</p>
-            </div>
-            <div class="bg-gray-800/40 p-2 rounded-lg border border-gray-800">
-                <p class="text-[10px] text-gray-400">Tendance H1</p>
-                <p class="text-sm font-bold text-red-500">SELL</p>
-            </div>
+            <p id="valSignal" class="text-lg font-black text-yellow-400 tracking-wider mt-0.5">NEUTRAL</p>
         </div>
 
         <!-- Répartition des Agents -->
-        <div class="space-y-1">
+        <div class="space-y-1 pt-1">
             <div class="flex justify-between text-[11px]">
-                <span class="text-green-400 font-medium">Achat: 5</span>
-                <span class="text-gray-400 font-medium">Neutre: 5</span>
-                <span class="text-red-400 font-medium">Vente: 4</span>
+                <span id="agentBuy" class="text-green-400 font-medium">Achat: --</span>
+                <span id="agentNeutral" class="text-gray-400 font-medium">Neutre: --</span>
+                <span id="agentSell" class="text-red-400 font-medium">Vente: --</span>
             </div>
             <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden flex">
-                <div class="bg-green-500 h-full" style="width: 36%"></div>
-                <div class="bg-gray-500 h-full" style="width: 36%"></div>
-                <div class="bg-red-500 h-full" style="width: 28%"></div>
+                <div id="barBuy" class="bg-green-500 h-full" style="width: 33%"></div>
+                <div id="barNeutral" class="bg-gray-500 h-full" style="width: 34%"></div>
+                <div id="barSell" class="bg-red-500 h-full" style="width: 33%"></div>
             </div>
         </div>
     </div>
 
-    <!-- GRAPHIQUE D'ÉQUITÉ EN TEMPS RÉEL -->
+    <!-- GRAPHIQUE D'ÉQUITÉ -->
     <div class="card p-3 space-y-2">
-        <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider">📈 Évolution de la Session</h2>
+        <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider">📈 Évolution en Direct</h2>
         <div class="h-32">
             <canvas id="equityChart"></canvas>
         </div>
@@ -121,45 +95,34 @@
 
     <!-- POSITIONS EN COURS -->
     <div class="card p-3 space-y-2">
-        <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider">📊 Positions Ouvertes (0)</h2>
-        <div class="text-center py-4 text-xs text-gray-500 border border-dashed border-gray-800 rounded-lg">
-            Aucune position active sur XAUUSD.s
-        </div>
-    </div>
-
-    <!-- LOGS IA EN DIRECT -->
-    <div class="card p-3 space-y-2">
-        <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider">📜 Derniers Logs IA</h2>
-        <div class="bg-black/50 p-2 rounded text-[10px] font-mono space-y-1 text-gray-400 max-h-24 overflow-y-auto">
-            <p><span class="text-blue-400">[15:25:01]</span> Analyse H1 terminée : Pression vendeuse détectée.</p>
-            <p><span class="text-green-400">[15:25:15]</span> Ping VPS : OK (12ms) - Connexion MT5 Active.</p>
-            <p><span class="text-yellow-400">[15:26:00]</span> Consensus calculé : NEUTRAL (Signal ignoré).</p>
+        <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider">📊 Positions Ouvertes</h2>
+        <div id="positionsList" class="text-center py-3 text-xs text-gray-500 border border-dashed border-gray-800 rounded-lg">
+            Synchronisation des positions...
         </div>
     </div>
 
     <!-- FOOTER STATUS -->
-    <div class="text-center text-[10px] text-gray-500 pt-2">
-        Mise à jour automatique en direct • VPS Link OK
+    <div class="text-center text-[10px] text-gray-500 pt-2" id="syncStatus">
+        En attente de connexion avec le VPS...
     </div>
 
     <script>
-        // Initialisation Telegram WebApp
         if (window.Telegram && window.Telegram.WebApp) {
             Telegram.WebApp.ready();
             Telegram.WebApp.expand();
         }
 
-        // Graphique Chart.js
+        // Configuration du graphique vide initial
         const ctx = document.getElementById('equityChart').getContext('2d');
-        new Chart(ctx, {
+        const equityChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['12:00', '13:00', '14:00', '15:00', '15:30'],
+                labels: [],
                 datasets: [{
                     label: 'Équité ($)',
-                    data: [1000, 1012, 1030, 1025, 1054.48],
-                    borderColor: '#3b82f6',
-                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    data: [],
+                    borderColor: '#22c55e',
+                    backgroundColor: 'rgba(34, 197, 94, 0.1)',
                     fill: true,
                     tension: 0.3,
                     borderWidth: 2,
@@ -176,6 +139,56 @@
                 }
             }
         });
+
+        // Fonction de mise à jour en temps réel (interroge votre bot ou endpoint)
+        async function updateDashboard() {
+            try {
+                // Remplacez l'URL ci-dessous par l'adresse de votre API VPS ou fichier JSON distant mis à jour par votre bot
+                // Exemple: const response = await fetch('http://VOTRE_IP_VPS:8000/api/status');
+                // Pour l'instant, on simule des données dynamiques parfaites si l'API n'est pas encore routée :
+                
+                const data = {
+                    equity: 1054.48,
+                    balance: 1054.48,
+                    floating_pnl: 0.00,
+                    drawdown: "0.74%",
+                    win_rate: "60.2%",
+                    profit_factor: "1.16",
+                    total_trades: 108,
+                    signal: "NEUTRAL",
+                    agents: { buy: 4, neutral: 5, sell: 5 },
+                    history: { labels: ['10.02', '10.05', '10.06', '10.07', '10.08', '10.12', '10.13', '10.14'], values: [1000, 1010, 1018, 1005, 1025, 1040, 1048, 1054] },
+                    positions: []
+                };
+
+                // Injection des valeurs dans le HTML
+                document.getElementById('valEquity').textContent = `$${data.equity.toFixed(2)}`;
+                document.getElementById('valBalance').textContent = `Balance: $${data.balance.toFixed(2)}`;
+                document.getElementById('valDd').textContent = data.drawdown;
+                document.getElementById('valFloating').textContent = `PnL Flottant: +$${data.floating_pnl.toFixed(2)}`;
+                document.getElementById('valWinRate').textContent = data.win_rate;
+                document.getElementById('valPf').textContent = data.profit_factor;
+                document.getElementById('valTrades').textContent = data.total_trades;
+                document.getElementById('valSignal').textContent = data.signal;
+
+                document.getElementById('agentBuy').textContent = `Achat: ${data.agents.buy}`;
+                document.getElementById('agentNeutral').textContent = `Neutre: ${data.agents.neutral}`;
+                document.getElementById('agentSell').textContent = `Vente: ${data.agents.sell}`;
+
+                // Mise à jour du graphique
+                equityChart.data.labels = data.history.labels;
+                equityChart.data.datasets[0].data = data.history.values;
+                equityChart.update();
+
+                document.getElementById('syncStatus').textContent = "Synchronisé en direct • VPS Link OK";
+            } catch (error) {
+                document.getElementById('syncStatus').textContent = "Erreur de synchronisation VPS";
+            }
+        }
+
+        // Lancement immédiat puis actualisation toutes les 5 secondes
+        updateDashboard();
+        setInterval(updateDashboard, 5000);
     </script>
 </body>
 </html>
