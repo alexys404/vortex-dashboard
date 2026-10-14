@@ -63,6 +63,13 @@
             margin-bottom: 12px;
         }
 
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 8px;
+        }
+
         .grid-4 {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -187,7 +194,7 @@
         <!-- Performance Stats (WinRate & Profit Factor) -->
         <div class="card full" style="margin-bottom: 12px;">
             <h3>Statistiques & Performance</h3>
-            <div class="grid-4" style="margin-top:0;">
+            <div class="grid-2" style="margin-top:0;">
                 <div class="pnl-box">
                     <span>WIN RATE</span>
                     <strong id="winrate" style="color: var(--accent-green);">0%</strong>
@@ -195,14 +202,6 @@
                 <div class="pnl-box">
                     <span>PROFIT FACTOR</span>
                     <strong id="profit-factor" style="color: var(--accent-blue);">0.00</strong>
-                </div>
-                <div class="pnl-box">
-                    <span>TRADES (30J)</span>
-                    <strong id="total-trades">0</strong>
-                </div>
-                <div class="pnl-box">
-                    <span>EXÉCUTION</span>
-                    <strong style="color: var(--accent-green);">1:2 RRR</strong>
                 </div>
             </div>
         </div>
@@ -317,7 +316,6 @@
                 // 2. Performance (WinRate / Profit Factor)
                 document.getElementById('winrate').innerText = (data.winrate || 0) + ' %';
                 document.getElementById('profit-factor').innerText = (data.profit_factor || 0).toFixed(2);
-                document.getElementById('total-trades').innerText = data.total_trades || 0;
 
                 // 3. Bénéfices PnL
                 const pToday = data.pnl_today || 0;
@@ -395,8 +393,14 @@
             }
         }
 
+        // Rafraîchissement des données toutes les 3 secondes
         setInterval(updateDashboard, 3000);
         updateDashboard();
+
+        // Rafraîchissement complet de la page toutes les 3 secondes
+        setInterval(() => {
+            location.reload();
+        }, 3000);
     </script>
 </body>
 </html>
