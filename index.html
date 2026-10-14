@@ -19,10 +19,10 @@
     <!-- HEADER / STATUT -->
     <div class="flex items-center justify-between pb-2 border-b border-gray-800">
         <div class="flex items-center space-x-2">
-            <span id="statusDot" class="w-3 h-3 bg-green-500 rounded-full animate-ping"></span>
+            <span class="w-3 h-3 bg-green-500 rounded-full animate-ping"></span>
             <h1 class="font-bold text-lg text-blue-400 tracking-wide">⚡ VORTEX_IA COCKPIT</h1>
         </div>
-        <span id="headerPnl" class="bg-green-500/10 text-green-400 border border-green-500/30 text-xs font-semibold px-2.5 py-0.5 rounded-full">Calcul en cours...</span>
+        <span id="headerPnl" class="bg-green-500/10 text-green-400 border border-green-500/30 text-xs font-semibold px-2.5 py-0.5 rounded-full">Sync...</span>
     </div>
 
     <!-- METRIQUES FINANCIERES PRINCIPALES -->
@@ -44,33 +44,27 @@
         <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider">🛡️ Performances MT5 (Temps Réel)</h2>
         <div class="grid grid-cols-3 gap-2 text-center pt-1">
             <div class="bg-gray-800/50 p-2 rounded-lg">
-                <p class="text-[10px] text-gray-400">Win Rate</p>
-                <p id="valWinRate" class="text-sm font-bold text-green-400">--</p>
+                <p class="text-[10px] text-gray-400">Signal Global</p>
+                <p id="valSignal" class="text-sm font-bold text-yellow-400">--</p>
             </div>
             <div class="bg-gray-800/50 p-2 rounded-lg">
-                <p class="text-[10px] text-gray-400">Profit Factor</p>
-                <p id="valPf" class="text-sm font-bold text-blue-400">--</p>
+                <p class="text-[10px] text-gray-400">Tendance H1</p>
+                <p id="valTrendH1" class="text-sm font-bold text-blue-400">--</p>
             </div>
             <div class="bg-gray-800/50 p-2 rounded-lg">
-                <p class="text-[10px] text-gray-400">Total Trades</p>
-                <p id="valTrades" class="text-sm font-bold text-yellow-400">--</p>
+                <p class="text-[10px] text-gray-400">Score Confluence</p>
+                <p id="valScore" class="text-sm font-bold text-green-400">--</p>
             </div>
         </div>
     </div>
 
-    <!-- ANALYSE IA & CONSENSUS -->
+    <!-- ANALYSE IA & AGENTS -->
     <div class="card p-3 space-y-3">
         <div class="flex justify-between items-center">
-            <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider">🧠 Consensus Stratégique</h2>
-            <span class="text-xs text-blue-400 font-semibold">Multi-Agents</span>
+            <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider">🧠 Répartition des 14 Agents</h2>
+            <span id="valProb" class="text-xs text-blue-400 font-semibold">Buy: -- | Sell: --</span>
         </div>
 
-        <div class="text-center py-1 bg-gray-900/60 rounded-lg border border-gray-800">
-            <p class="text-xs text-gray-400">Signal Global IA</p>
-            <p id="valSignal" class="text-lg font-black text-yellow-400 tracking-wider mt-0.5">NEUTRAL</p>
-        </div>
-
-        <!-- Répartition des Agents -->
         <div class="space-y-1 pt-1">
             <div class="flex justify-between text-[11px]">
                 <span id="agentBuy" class="text-green-400 font-medium">Achat: --</span>
@@ -85,25 +79,19 @@
         </div>
     </div>
 
-    <!-- GRAPHIQUE D'ÉQUITÉ -->
-    <div class="card p-3 space-y-2">
-        <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider">📈 Évolution en Direct</h2>
-        <div class="h-32">
-            <canvas id="equityChart"></canvas>
-        </div>
-    </div>
-
     <!-- POSITIONS EN COURS -->
     <div class="card p-3 space-y-2">
         <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider">📊 Positions Ouvertes</h2>
-        <div id="positionsList" class="text-center py-3 text-xs text-gray-500 border border-dashed border-gray-800 rounded-lg">
-            Synchronisation des positions...
+        <div id="positionsContainer" class="space-y-2">
+            <div class="text-center py-3 text-xs text-gray-500 border border-dashed border-gray-800 rounded-lg">
+                Aucune position active
+            </div>
         </div>
     </div>
 
     <!-- FOOTER STATUS -->
     <div class="text-center text-[10px] text-gray-500 pt-2" id="syncStatus">
-        En attente de connexion avec le VPS...
+        Connexion au VPS en cours...
     </div>
 
     <script>
@@ -112,83 +100,61 @@
             Telegram.WebApp.expand();
         }
 
-        // Configuration du graphique vide initial
-        const ctx = document.getElementById('equityChart').getContext('2d');
-        const equityChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: 'Équité ($)',
-                    data: [],
-                    borderColor: '#22c55e',
-                    backgroundColor: 'rgba(34, 197, 94, 0.1)',
-                    fill: true,
-                    tension: 0.3,
-                    borderWidth: 2,
-                    pointRadius: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                    x: { grid: { display: false }, ticks: { color: '#6b7280', font: { size: 9 } } },
-                    y: { grid: { color: '#1f2937' }, ticks: { color: '#6b7280', font: { size: 9 } } }
-                }
-            }
-        });
-
-        // Fonction de mise à jour en temps réel (interroge votre bot ou endpoint)
-        async function updateDashboard() {
+        async function fetchRealtimeData() {
             try {
-                // Remplacez l'URL ci-dessous par l'adresse de votre API VPS ou fichier JSON distant mis à jour par votre bot
-                // Exemple: const response = await fetch('http://VOTRE_IP_VPS:8000/api/status');
-                // Pour l'instant, on simule des données dynamiques parfaites si l'API n'est pas encore routée :
-                
-                const data = {
-                    equity: 1054.48,
-                    balance: 1054.48,
-                    floating_pnl: 0.00,
-                    drawdown: "0.74%",
-                    win_rate: "60.2%",
-                    profit_factor: "1.16",
-                    total_trades: 108,
-                    signal: "NEUTRAL",
-                    agents: { buy: 4, neutral: 5, sell: 5 },
-                    history: { labels: ['10.02', '10.05', '10.06', '10.07', '10.08', '10.12', '10.13', '10.14'], values: [1000, 1010, 1018, 1005, 1025, 1040, 1048, 1054] },
-                    positions: []
-                };
+                // Remplacez par l'URL publique ou IP de votre VPS FastAPI (ex: http://VOTRE_IP_VPS:8000/api/status)
+                const response = await fetch('http://localhost:8000/api/status');
+                const data = await response.json();
 
-                // Injection des valeurs dans le HTML
-                document.getElementById('valEquity').textContent = `$${data.equity.toFixed(2)}`;
-                document.getElementById('valBalance').textContent = `Balance: $${data.balance.toFixed(2)}`;
-                document.getElementById('valDd').textContent = data.drawdown;
-                document.getElementById('valFloating').textContent = `PnL Flottant: +$${data.floating_pnl.toFixed(2)}`;
-                document.getElementById('valWinRate').textContent = data.win_rate;
-                document.getElementById('valPf').textContent = data.profit_factor;
-                document.getElementById('valTrades').textContent = data.total_trades;
-                document.getElementById('valSignal').textContent = data.signal;
+                // Mise à jour des valeurs principales
+                document.getElementById('valEquity').textContent = `$${data.equity}`;
+                document.getElementById('valBalance').textContent = `Balance: $${data.balance}`;
+                document.getElementById('valDd').textContent = `${data.drawdown_pct}%`;
+                document.getElementById('valFloating').textContent = `PnL Global: ${data.pnl >= 0 ? '+' : ''}$${data.pnl}`;
+                document.getElementById('headerPnl').textContent = `${data.pnl >= 0 ? '+' : ''}$${data.pnl}`;
 
-                document.getElementById('agentBuy').textContent = `Achat: ${data.agents.buy}`;
-                document.getElementById('agentNeutral').textContent = `Neutre: ${data.agents.neutral}`;
-                document.getElementById('agentSell').textContent = `Vente: ${data.agents.sell}`;
+                document.getElementById('valSignal').textContent = data.consensus_signal;
+                document.getElementById('valTrendH1').textContent = data.trend_h1;
+                document.getElementById('valScore').textContent = `${data.consensus_score}%`;
 
-                // Mise à jour du graphique
-                equityChart.data.labels = data.history.labels;
-                equityChart.data.datasets[0].data = data.history.values;
-                equityChart.update();
+                document.getElementById('valProb').textContent = `Buy: ${data.prob_buy}% | Sell: ${data.prob_sell}%`;
+                document.getElementById('agentBuy').textContent = `Achat: ${data.agents_buy}`;
+                document.getElementById('agentNeutral').textContent = `Neutre: ${data.agents_neutral}`;
+                document.getElementById('agentSell').textContent = `Vente: ${data.agents_sell}`;
+
+                // Barres de progression dynamiques des agents
+                const total = data.total_agents || 14;
+                document.getElementById('barBuy').style.width = `${(data.agents_buy / total) * 100}%`;
+                document.getElementById('barNeutral').style.width = `${(data.agents_neutral / total) * 100}%`;
+                document.getElementById('barSell').style.width = `${(data.agents_sell / total) * 100}%`;
+
+                // Gestion des positions ouvertes
+                const container = document.getElementById('positionsContainer');
+                if (data.open_positions && data.open_positions.length > 0) {
+                    container.innerHTML = data.open_positions.map(p => `
+                        <div class="bg-gray-800/40 p-2.5 rounded-lg border border-gray-800 flex justify-between items-center text-xs">
+                            <div>
+                                <span class="font-bold ${p.type === 'BUY' ? 'text-green-400' : 'text-red-400'}">${p.type}</span> 
+                                <span class="text-gray-300">${p.symbol}</span> 
+                                <span class="text-gray-500">(${p.volume} lots)</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="font-bold ${p.profit >= 0 ? 'text-green-400' : 'text-red-400'}">${p.profit >= 0 ? '+' : ''}${p.profit} $</span>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = `<div class="text-center py-3 text-xs text-gray-500 border border-dashed border-gray-800 rounded-lg">Aucune position active</div>`;
+                }
 
                 document.getElementById('syncStatus').textContent = "Synchronisé en direct • VPS Link OK";
-            } catch (error) {
-                document.getElementById('syncStatus').textContent = "Erreur de synchronisation VPS";
+            } catch (err) {
+                document.getElementById('syncStatus').textContent = "⚠️ En attente du serveur VPS (API)...";
             }
         }
 
-        // Lancement immédiat puis actualisation toutes les 5 secondes
-        updateDashboard();
-        setInterval(updateDashboard, 5000);
+        fetchRealtimeData();
+        setInterval(fetchRealtimeData, 3000); // Actualisation toutes les 3 secondes
     </script>
 </body>
 </html>
