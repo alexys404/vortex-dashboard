@@ -82,35 +82,35 @@
 
         <div class="text-center py-1 bg-gray-900/60 rounded-lg border border-gray-800">
             <p class="text-xs text-gray-400">Signal Global IA</p>
-            <p id="valSignal" class="text-lg font-black text-yellow-400 tracking-wider mt-0.5">NEUTRE</p>
+            <p id="valSignal" class="text-lg font-black text-yellow-400 tracking-wider mt-0.5">--</p>
         </div>
 
         <div class="grid grid-cols-3 gap-2 text-center">
             <div class="bg-gray-800/40 p-2 rounded-lg border border-gray-800">
                 <p class="text-[10px] text-gray-400">Prob. Achat</p>
-                <p id="valProbBuy" class="text-sm font-bold text-green-400">42%</p>
+                <p id="valProbBuy" class="text-sm font-bold text-green-400">--</p>
             </div>
             <div class="bg-gray-800/40 p-2 rounded-lg border border-gray-800">
                 <p class="text-[10px] text-gray-400">Prob. Vente</p>
-                <p id="valProbSell" class="text-sm font-bold text-red-400">42%</p>
+                <p id="valProbSell" class="text-sm font-bold text-red-400">--</p>
             </div>
             <div class="bg-gray-800/40 p-2 rounded-lg border border-gray-800">
                 <p class="text-[10px] text-gray-400">Tendance H1</p>
-                <p id="valTrendH1" class="text-sm font-bold text-red-500">VENTE</p>
+                <p id="valTrendH1" class="text-sm font-bold text-red-500">--</p>
             </div>
         </div>
 
         <!-- Répartition des Agents -->
         <div class="space-y-1">
             <div class="flex justify-between text-[11px]">
-                <span id="agentBuy" class="text-green-400 font-medium">Achat : 4</span>
-                <span id="agentNeutral" class="text-gray-400 font-medium">Neutre : 5</span>
-                <span id="agentSell" class="text-red-400 font-medium">Vente : 5</span>
+                <span id="agentBuy" class="text-green-400 font-medium">Achat : --</span>
+                <span id="agentNeutral" class="text-gray-400 font-medium">Neutre : --</span>
+                <span id="agentSell" class="text-red-400 font-medium">Vente : --</span>
             </div>
             <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden flex">
-                <div id="barBuy" class="bg-green-500 h-full" style="width: 28%"></div>
-                <div id="barNeutral" class="bg-gray-500 h-full" style="width: 36%"></div>
-                <div id="barSell" class="bg-red-500 h-full" style="width: 36%"></div>
+                <div id="barBuy" class="bg-green-500 h-full" style="width: 33%"></div>
+                <div id="barNeutral" class="bg-gray-500 h-full" style="width: 34%"></div>
+                <div id="barSell" class="bg-red-500 h-full" style="width: 33%"></div>
             </div>
         </div>
     </div>
@@ -181,10 +181,14 @@
 
                 document.getElementById('valEquity').textContent = `$${data.equity}`;
                 document.getElementById('valBalance').textContent = `Balance : $${data.balance}`;
-                document.getElementById('headerPnl').textContent = `${data.pnl >= 0 ? '+' : ''}$${data.pnl}`;
+                document.getElementById('headerPnl').textContent = `PnL : ${data.pnl >= 0 ? '+' : ''}$${data.pnl}`;
 
                 document.getElementById('valSignal').textContent = data.consensus_signal;
                 document.getElementById('valScore').textContent = `${data.consensus_score}%`;
+                document.getElementById('valProbBuy').textContent = `${data.prob_buy}%`;
+                document.getElementById('valProbSell').textContent = `${data.prob_sell}%`;
+                document.getElementById('valTrendH1').textContent = data.trend_h1;
+
                 document.getElementById('agentBuy').textContent = `Achat : ${data.agents_buy}`;
                 document.getElementById('agentNeutral').textContent = `Neutre : ${data.agents_neutral}`;
                 document.getElementById('agentSell').textContent = `Vente : ${data.agents_sell}`;
@@ -229,7 +233,7 @@
                     container.innerHTML = `<div class="text-center py-4 text-xs text-gray-500 border border-dashed border-gray-800 rounded-lg">Aucune position active sur XAUUSD.s</div>`;
                 }
 
-                document.getElementById('syncStatus').textContent = "Mise à jour automatique en direct • VPS Link OK";
+                document.getElementById('syncStatus').textContent = "Synchronisé en direct • VPS Link OK";
             } catch (err) {
                 document.getElementById('syncStatus').textContent = "⚠️ En attente du serveur VPS...";
             }
