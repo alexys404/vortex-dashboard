@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vortex_IA // QUANT MATRIX</title>
+    <title>Vortex_IA // QUANT TERMINAL</title>
     <!-- Script Telegram Web App -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
@@ -144,13 +144,6 @@
             margin-bottom: 10px;
         }
 
-        .grid-4 {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
-            margin-top: 6px;
-        }
-
         /* Cartes Holographiques */
         .card {
             background: var(--bg-card);
@@ -250,10 +243,6 @@
         }
 
         /* Barres de progression cyberpunk */
-        .progress-container {
-            margin-top: 10px;
-        }
-
         .progress-bar-wrapper {
             display: flex;
             height: 6px;
@@ -318,15 +307,15 @@
         <!-- Ticker de flux -->
         <div class="ticker-wrap">
             <div class="ticker-move">
-                ⚡ VORTEX_IA QUANT ENGINE // XAUUSD LIVE TELEMETRY ACTIVE // 14 NEURAL AGENTS SYNCHRONIZED // LATENCY: &lt; 12MS // SECURE CLOUDFLARE TUNNEL CONNECTED //
+                ⚡ VORTEX_IA MULTI-AGENT ENGINE // XAUUSD LIVE TELEMETRY ACTIVE // 15 NEURAL AGENTS + DEEPSEEK BRAIN // LATENCY: &lt; 12MS // SECURE CLOUDFLARE TUNNEL CONNECTED //
             </div>
         </div>
 
-        <!-- Header -->
+        <!-- Header (Nettoyé) -->
         <header>
             <div class="brand-group">
                 <h1>VORTEX<span>_IA</span></h1>
-                <div class="matrix-sub">QUANT MATRIX v4.2</div>
+                <div class="matrix-sub">AI TRADING SYSTEM</div>
             </div>
             <div id="connection-status" class="badge-status">
                 <div class="pulse-dot"></div>
@@ -339,12 +328,10 @@
             <div class="card">
                 <h3>Équité (Equity)</h3>
                 <div class="value" id="equity">-- $</div>
-                <div class="sub-text">SOLDE : <span id="balance" style="color:var(--text-main); font-weight:600;">--</span> $</div>
             </div>
             <div class="card">
                 <h3>Drawdown Actuel</h3>
                 <div class="value" id="drawdown" style="color: var(--accent-emerald);">0%</div>
-                <div class="sub-text">FLOTTANT : <span id="pnl" style="font-weight:600;">+$0</span></div>
             </div>
         </div>
 
@@ -363,26 +350,19 @@
             </div>
         </div>
 
-        <!-- PnL Réalisé -->
-        <div class="card" style="margin-bottom: 10px;">
-            <h3>Bénéfices Réalisés (PnL)</h3>
-            <div class="grid-4">
-                <div class="stat-box">
-                    <span>JOUR</span>
-                    <strong id="pnl-today">+0.00 $</strong>
-                </div>
-                <div class="stat-box">
-                    <span>SEMAINE</span>
-                    <strong id="pnl-week">+0.00 $</strong>
-                </div>
-                <div class="stat-box">
-                    <span>MOIS</span>
-                    <strong id="pnl-month">+0.00 $</strong>
-                </div>
-                <div class="stat-box">
-                    <span>ANNÉE</span>
-                    <strong id="pnl-year">+0.00 $</strong>
-                </div>
+        <!-- Cerveau IA DeepSeek (Ajouté à la place des bénéfices) -->
+        <div class="card" style="margin-bottom: 10px; border-color: rgba(56, 189, 248, 0.3);">
+            <h3>🧠 Cerveau IA DeepSeek (Filtre Ultime)</h3>
+            <div class="data-row" style="margin-top: 4px;">
+                <span>Décision Actuelle :</span>
+                <strong id="deepseek-decision" class="neutral">WAIT</strong>
+            </div>
+            <div class="data-row">
+                <span>Niveau de Confiance :</span>
+                <strong id="deepseek-confidence" style="color: var(--accent-cyan);">0%</strong>
+            </div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-muted); margin-top: 8px; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 8px;" id="deepseek-reason">
+                En attente du premier signal d'analyse...
             </div>
         </div>
 
@@ -390,7 +370,7 @@
         <div class="card" style="margin-bottom: 10px;">
             <h3>Analyse IA & Stratégie</h3>
             <div class="data-row" style="margin-top: 2px;">
-                <span>Consensus Neural :</span>
+                <span>Consensus 15 Agents :</span>
                 <strong id="consensus" class="neutral">NEUTRAL</strong>
             </div>
             <div class="data-row">
@@ -409,9 +389,9 @@
             </div>
         </div>
 
-        <!-- Répartition des 14 Agents -->
+        <!-- Répartition des 15 Agents -->
         <div class="card" style="margin-bottom: 10px;">
-            <h3>Matrice des 14 Agents</h3>
+            <h3>Matrice des 15 Agents</h3>
             <div class="data-row" style="font-size: 0.75rem; border-bottom: none; padding-bottom: 2px;">
                 <span style="color:var(--accent-emerald);">BUY: <b id="agents-buy">0</b></span>
                 <span style="color:var(--text-muted);">NEUT: <b id="agents-neut">0</b></span>
@@ -433,7 +413,7 @@
         </div>
 
         <div class="footer">
-            SECURE QUANT TERMINAL // POWERED BY VORTEX_IA ENGINE
+            SECURE QUANT TERMINAL // POWERED BY VORTEX_IA & DEEPSEEK
         </div>
     </div>
 
@@ -444,12 +424,7 @@
             tg.expand();
         }
 
-        const API_URL = "https://remainder-trains-smaller-previous.trycloudflare.com/api/status"; 
-
-        function formatPnL(val) {
-            const prefix = val > 0 ? '+' : '';
-            return `${prefix}${val.toFixed(2)} $`;
-        }
+        const API_URL = "https://char-aim-ensuring-improving.trycloudflare.com/api/status"; 
 
         function getPnLColor(val) {
             if (val > 0) return 'var(--accent-emerald)';
@@ -463,34 +438,23 @@
                 if (!response.ok) throw new Error("Erreur serveur");
                 const data = await response.json();
 
-                // 1. Solde & Équité
+                // 1. Équité & Drawdown
                 document.getElementById('equity').innerText = data.equity.toFixed(2) + ' $';
-                document.getElementById('balance').innerText = data.balance.toFixed(2);
-                document.getElementById('pnl').innerText = formatPnL(data.pnl);
-                document.getElementById('pnl').style.color = getPnLColor(data.pnl);
-                document.getElementById('drawdown').innerText = data.drawdown_pct + ' %';
+                document.getElementById('drawdown').innerText = (data.drawdown_pct || 0) + ' %';
 
-                // 2. Performance
-                document.getElementById('winrate').innerText = (data.winrate || 0) + ' %';
+                // 2. Performance (Win Rate & Profit Factor)
+                document.getElementById('winrate').innerText = (data.win_rate || 0) + ' %';
                 document.getElementById('profit-factor').innerText = (data.profit_factor || 0).toFixed(2);
 
-                // 3. PnL Périodes
-                const pToday = data.pnl_today || 0;
-                const pWeek = data.pnl_week || 0;
-                const pMonth = data.pnl_month || 0;
-                const pYear = data.pnl_year || 0;
-
-                document.getElementById('pnl-today').innerText = formatPnL(pToday);
-                document.getElementById('pnl-today').style.color = getPnLColor(pToday);
-
-                document.getElementById('pnl-week').innerText = formatPnL(pWeek);
-                document.getElementById('pnl-week').style.color = getPnLColor(pWeek);
-
-                document.getElementById('pnl-month').innerText = formatPnL(pMonth);
-                document.getElementById('pnl-month').style.color = getPnLColor(pMonth);
-
-                document.getElementById('pnl-year').innerText = formatPnL(pYear);
-                document.getElementById('pnl-year').style.color = getPnLColor(pYear);
+                // 3. Cerveau DeepSeek
+                if (data.deepseek_agent) {
+                    const dsDec = document.getElementById('deepseek-decision');
+                    dsDec.innerText = data.deepseek_agent.decision + ' (' + data.deepseek_agent.confidence + '%)';
+                    dsDec.className = data.deepseek_agent.decision === 'BUY' ? 'buy' : (data.deepseek_agent.decision === 'SELL' ? 'sell' : 'neutral');
+                    
+                    document.getElementById('deepseek-confidence').innerText = data.deepseek_agent.confidence + '%';
+                    document.getElementById('deepseek-reason').innerText = data.deepseek_agent.reason || 'Analyse en cours...';
+                }
 
                 // 4. Consensus & IA
                 const consensusEl = document.getElementById('consensus');
@@ -509,7 +473,7 @@
                 document.getElementById('agents-neut').innerText = data.agents_neutral;
                 document.getElementById('agents-sell').innerText = data.agents_sell;
 
-                const total = data.total_agents || 14;
+                const total = data.total_agents || 15;
                 document.getElementById('bar-buy').style.width = (data.agents_buy / total * 100) + '%';
                 document.getElementById('bar-neut').style.width = (data.agents_neutral / total * 100) + '%';
                 document.getElementById('bar-sell').style.width = (data.agents_sell / total * 100) + '%';
@@ -522,14 +486,13 @@
 
                 if (openPos.length > 0) {
                     let html = '<table>';
-                    html += '<tr><th>TYPE</th><th>LOTS</th><th>PRIX</th><th>PROFIT</th></tr>';
+                    html += '<tr><th>TYPE</th><th>LOTS</th><th>PRIX</th><th>SL / TP</th></tr>';
                     openPos.forEach(p => {
-                        const color = getPnLColor(p.profit);
                         html += `<tr>
                             <td style="color:${p.type === 'BUY' ? 'var(--accent-emerald)' : 'var(--accent-rose)'}; font-weight:800;">${p.type}</td>
                             <td>${p.volume}</td>
                             <td>${p.price_open}</td>
-                            <td style="color:${color}; font-weight:800;">${p.profit >= 0 ? '+' : ''}${p.profit.toFixed(2)} $</td>
+                            <td style="font-size: 0.7rem; color: var(--text-muted);">SL: ${p.sl} / TP: ${p.tp}</td>
                         </tr>`;
                     });
                     html += '</table>';
@@ -553,7 +516,6 @@
             }
         }
 
-        // Boucle séquentielle stabilisée (attend la fin de chaque requête + 3 secondes)
         async function pollLoop() {
             await updateDashboard();
             setTimeout(pollLoop, 3000);
