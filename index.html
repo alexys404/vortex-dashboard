@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vortex_IA // QUANT TERMINAL</title>
+    <title>Vortex_IA // TERMINAL QUANTIQUE</title>
     <!-- Script Telegram Web App -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
@@ -42,7 +42,7 @@
             margin: 0 auto;
         }
 
-        /* Ticker de flux en haut */
+        /* Ticker de flux */
         .ticker-wrap {
             background: rgba(0, 0, 0, 0.7);
             border: 1px solid var(--border-glow);
@@ -226,13 +226,13 @@
             width: 160px;
             height: 160px;
             border-radius: 50%;
-            border: 12px solid var(--accent-cyan);
+            border: 12px solid var(--accent-purple);
             border-bottom-color: transparent;
             border-left-color: transparent;
             box-sizing: border-box;
             transform: rotate(-45deg);
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            filter: drop-shadow(0 0 8px var(--accent-cyan));
+            filter: drop-shadow(0 0 8px var(--accent-purple));
         }
 
         .gauge-center {
@@ -246,8 +246,8 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 1.3rem;
             font-weight: 800;
-            color: var(--accent-cyan);
-            text-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+            color: var(--accent-purple);
+            text-shadow: 0 0 10px rgba(168, 85, 247, 0.6);
         }
 
         /* Mini boîtes stats */
@@ -294,7 +294,7 @@
             font-size: 0.75rem;
         }
 
-        /* Barres de progression cyberpunk fluides */
+        /* Barres de progression */
         .progress-bar-wrapper {
             display: flex;
             height: 8px;
@@ -334,7 +334,6 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.02);
         }
 
-        /* Classes utilitaires couleurs Néon */
         .neutral { color: var(--accent-amber); font-weight: 700; text-shadow: 0 0 10px rgba(251, 191, 36, 0.5); }
         .buy { color: var(--accent-emerald); font-weight: 700; text-shadow: 0 0 10px rgba(16, 185, 129, 0.6); }
         .sell { color: var(--accent-rose); font-weight: 700; text-shadow: 0 0 10px rgba(244, 63, 94, 0.6); }
@@ -355,7 +354,7 @@
         <!-- Ticker de flux -->
         <div class="ticker-wrap">
             <div class="ticker-move">
-                ⚡ VORTEX_IA MULTI-AGENT ENGINE // XAUUSD LIVE TELEMETRY ACTIVE // 15 NEURAL AGENTS + DEEPSEEK BRAIN // LATENCY: &lt; 12MS // SECURE CLOUDFLARE TUNNEL CONNECTED //
+                ⚡ VORTEX_IA MOTEUR MULTI-AGENTS // TÉLÉMÉTRIE EN DIRECT XAUUSD // 15 AGENTS NEURONAUX + CERVEAU DEEPSEEK // LATENCE: &lt; 12MS // TUNNEL CLOUDFLARE SÉCURISÉ //
             </div>
         </div>
 
@@ -363,7 +362,7 @@
         <header>
             <div class="brand-group">
                 <h1>VORTEX<span>_IA</span></h1>
-                <div class="matrix-sub">AI TRADING SYSTEM</div>
+                <div class="matrix-sub">SYSTÈME DE TRADING AUTOMATISÉ</div>
             </div>
             <div id="connection-status" class="badge-status">
                 <div class="pulse-dot"></div>
@@ -374,84 +373,92 @@
         <!-- Solde & Risque -->
         <div class="grid-2">
             <div class="card">
-                <h3>Équité (Equity)</h3>
+                <h3>Équité (Capital)</h3>
                 <div class="value" id="equity" style="color: var(--accent-cyan); text-shadow: 0 0 12px rgba(56, 189, 248, 0.5);">-- $</div>
             </div>
             <div class="card">
                 <h3>Drawdown Actuel</h3>
-                <div class="value" id="drawdown" style="color: var(--accent-emerald); text-shadow: 0 0 12px rgba(16, 185, 129, 0.5);">0%</div>
+                <div class="value" id="drawdown" style="color: var(--accent-emerald); text-shadow: 0 0 12px rgba(16, 185, 129, 0.5);">-- %</div>
             </div>
         </div>
 
         <!-- Performance -->
         <div class="card" style="margin-bottom: 10px;">
-            <h3>Statistiques & Performance</h3>
+            <h3>Statistiques & Performance (30 jours)</h3>
             <div class="grid-2" style="margin-top: 8px;">
                 <div class="stat-box">
-                    <span>WIN RATE</span>
-                    <strong id="winrate" class="buy">0%</strong>
+                    <span>TAUX DE RÉUSSITE</span>
+                    <strong id="winrate" class="buy">-- %</strong>
                 </div>
                 <div class="stat-box">
-                    <span>PROFIT FACTOR</span>
-                    <strong id="profit-factor" style="color: var(--accent-cyan); text-shadow: 0 0 8px rgba(56, 189, 248, 0.4);">0.00</strong>
+                    <span>FACTEUR DE PROFIT</span>
+                    <strong id="profit-factor" style="color: var(--accent-cyan); text-shadow: 0 0 8px rgba(56, 189, 248, 0.4);">--</strong>
                 </div>
             </div>
         </div>
 
         <!-- Cerveau IA DeepSeek avec JAUGE DEMI-CERCLE -->
         <div class="card" style="margin-bottom: 10px; border-color: rgba(168, 85, 247, 0.4); box-shadow: 0 0 20px rgba(168, 85, 247, 0.15);">
-            <h3 style="color: var(--accent-purple); text-shadow: 0 0 8px rgba(168, 85, 247, 0.4);">🧠 Cerveau IA DeepSeek (Filtre Ultime)</h3>
+            <h3 style="color: var(--accent-purple); text-shadow: 0 0 8px rgba(168, 85, 247, 0.4);">🧠 Cerveau IA DeepSeek (Filtre Ultime SMC)</h3>
             
             <div class="gauge-container">
                 <div class="gauge-wrapper">
                     <div class="gauge-bg"></div>
-                    <div class="gauge-fill" id="gauge-fill"></div>
+                    <div class="gauge-fill" id="gauge-fill" style="transform: rotate(-45deg);"></div>
                     <div class="gauge-center">
-                        <div class="gauge-val" id="deepseek-confidence">0%</div>
+                        <div class="gauge-val" id="deepseek-confidence">-- %</div>
                     </div>
                 </div>
-                <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--text-muted); margin-top: 4px;">SCORE DE CONFIANCE</div>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--text-muted); margin-top: 4px;">INDICE DE CONFIANCE</div>
             </div>
 
             <div class="data-row">
-                <span>Décision Actuelle :</span>
-                <strong id="deepseek-decision" class="neutral">WAIT</strong>
+                <span>Décision Instantanée :</span>
+                <strong id="deepseek-decision" class="neutral">--</strong>
             </div>
             <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-muted); margin-top: 8px; background: rgba(0,0,0,0.4); padding: 9px; border-radius: 8px; border: 1px solid var(--border-card);" id="deepseek-reason">
-                En attente du premier signal d'analyse...
+                Connexion au serveur...
             </div>
         </div>
 
-        <!-- Analyse IA & Consensus -->
+        <!-- Structure SMC & DXY -->
         <div class="card" style="margin-bottom: 10px;">
-            <h3>Analyse IA & Stratégie</h3>
+            <h3>Structure de Marché & SMC</h3>
             <div class="data-row" style="margin-top: 2px;">
-                <span>Consensus 15 Agents :</span>
-                <strong id="consensus" class="neutral">NEUTRAL</strong>
+                <span>Structure SMC (Sweeps/OB/FVG) :</span>
+                <strong id="smc-status" class="neutral" style="font-size: 0.75rem;">--</strong>
             </div>
             <div class="data-row">
-                <span>Tendance H1 :</span>
-                <strong id="trend-h1" class="neutral">NEUTRAL</strong>
+                <span>Indice Dollar (DXY) :</span>
+                <strong id="dxy-trend" class="neutral">--</strong>
+            </div>
+            <div class="data-row">
+                <span>Signal Consensus (15 Agents) :</span>
+                <strong id="consensus" class="neutral">--</strong>
+            </div>
+            <div class="data-row">
+                <span>Tendance H1 (Or) :</span>
+                <strong id="trend-h1" class="neutral">--</strong>
             </div>
             <div class="grid-2" style="margin-top: 8px; margin-bottom: 0;">
                 <div class="stat-box">
                     <span>Probabilité Achat</span>
-                    <strong id="prob-buy" class="buy">0%</strong>
+                    <strong id="prob-buy" class="buy">-- %</strong>
                 </div>
                 <div class="stat-box">
                     <span>Probabilité Vente</span>
-                    <strong id="prob-sell" class="sell">0%</strong>
+                    <strong id="prob-sell" class="sell">-- %</strong>
                 </div>
             </div>
         </div>
 
         <!-- Répartition des 15 Agents -->
         <div class="card" style="margin-bottom: 10px;">
-            <h3>Matrice des 15 Agents</h3>
+            <h3>Matrice des 15 Agents Algorithmiques</h3>
             <div class="data-row" style="font-size: 0.75rem; border-bottom: none; padding-bottom: 2px;">
-                <span class="buy">BUY: <b id="agents-buy">0</b></span>
-                <span style="color:var(--text-muted);">NEUT: <b id="agents-neut">0</b></span>
-                <span class="sell">SELL: <b id="agents-sell">0</b></span>
+                <span class="buy">ACHAT: <b id="agents-buy">0</b></span>
+                <span style="color:var(--text-muted);">NEUTRE: <b id="agents-neut">0</b></span>
+                <span class="sell">VENTE: <b id="agents-sell">0</b></span>
             </div>
             <div class="progress-bar-wrapper">
                 <div id="bar-buy" class="bar-buy" style="width: 0%;"></div>
@@ -469,7 +476,7 @@
         </div>
 
         <div class="footer">
-            SECURE QUANT TERMINAL // POWERED BY VORTEX_IA & DEEPSEEK
+            TERMINAL QUANTIQUE SÉCURISÉ // PROPULSÉ PAR VORTEX_IA & DEEPSEEK
         </div>
     </div>
 
@@ -480,10 +487,10 @@
             tg.expand();
         }
 
+        // Remplace cette URL par celle générée par Cloudflare sur ton VPS si elle a changé
         const API_URL = "https://char-aim-ensuring-improving.trycloudflare.com/api/status"; 
 
         function updateGauge(confidencePercent) {
-            // Convertit un pourcentage (0 à 100%) en degrés pour le demi-cercle (-45deg à 135deg)
             const angle = -45 + (confidencePercent / 100) * 180;
             const fill = document.getElementById('gauge-fill');
             if (fill) {
@@ -494,7 +501,7 @@
         async function updateDashboard() {
             try {
                 const response = await fetch(API_URL);
-                if (!response.ok) throw new Error("Erreur serveur");
+                if (!response.ok) throw new Error("Erreur réponse API");
                 const data = await response.json();
 
                 // 1. Équité & Drawdown
@@ -509,7 +516,12 @@
                 if (data.deepseek_agent) {
                     const conf = data.deepseek_agent.confidence || 0;
                     const dsDec = document.getElementById('deepseek-decision');
-                    dsDec.innerText = data.deepseek_agent.decision;
+                    
+                    let decText = 'ATTENTE';
+                    if (data.deepseek_agent.decision === 'BUY') decText = 'ACHAT';
+                    else if (data.deepseek_agent.decision === 'SELL') decText = 'VENTE';
+
+                    dsDec.innerText = decText;
                     dsDec.className = data.deepseek_agent.decision === 'BUY' ? 'buy' : (data.deepseek_agent.decision === 'SELL' ? 'sell' : 'neutral');
                     
                     document.getElementById('deepseek-confidence').innerText = conf + '%';
@@ -518,19 +530,31 @@
                     document.getElementById('deepseek-reason').innerText = data.deepseek_agent.reason || 'Analyse en cours...';
                 }
 
-                // 4. Consensus & IA
+                // 4. Structure SMC, DXY & Consensus
+                const smcEl = document.getElementById('smc-status');
+                const smcVal = data.smc_status || 'AUCUNE';
+                smcEl.innerText = smcVal;
+                smcEl.className = smcVal.includes('BULLISH') ? 'buy' : (smcVal.includes('BEARISH') ? 'sell' : 'neutral');
+
+                const dxyEl = document.getElementById('dxy-trend');
+                const dxyVal = data.dxy_trend || 'NEUTRAL';
+                dxyEl.innerText = dxyVal === 'BUY' ? 'HAUSSIER' : (dxyVal === 'SELL' ? 'BAISSIER' : 'NEUTRE');
+                dxyEl.className = dxyVal === 'BUY' ? 'buy' : (dxyVal === 'SELL' ? 'sell' : 'neutral');
+
                 const consensusEl = document.getElementById('consensus');
-                consensusEl.innerText = data.consensus_signal + ' (' + data.consensus_score + '%)';
+                const consSignalText = data.consensus_signal === 'BUY' ? 'ACHAT' : (data.consensus_signal === 'SELL' ? 'VENTE' : 'NEUTRE');
+                consensusEl.innerText = consSignalText + ' (' + data.consensus_score + '%)';
                 consensusEl.className = data.consensus_signal === 'BUY' ? 'buy' : (data.consensus_signal === 'SELL' ? 'sell' : 'neutral');
 
                 const trendH1El = document.getElementById('trend-h1');
-                trendH1El.innerText = data.trend_h1 || 'NEUTRAL';
+                const trendH1Text = data.trend_h1 === 'BUY' ? 'HAUSSIER' : (data.trend_h1 === 'SELL' ? 'BAISSIER' : 'NEUTRE');
+                trendH1El.innerText = trendH1Text;
                 trendH1El.className = data.trend_h1 === 'BUY' ? 'buy' : (data.trend_h1 === 'SELL' ? 'sell' : 'neutral');
 
                 document.getElementById('prob-buy').innerText = data.prob_buy + '%';
                 document.getElementById('prob-sell').innerText = data.prob_sell + '%';
 
-                // 5. Agents
+                // 5. Matrice des 15 Agents
                 document.getElementById('agents-buy').innerText = data.agents_buy;
                 document.getElementById('agents-neut').innerText = data.agents_neutral;
                 document.getElementById('agents-sell').innerText = data.agents_sell;
@@ -540,7 +564,7 @@
                 document.getElementById('bar-neut').style.width = (data.agents_neutral / total * 100) + '%';
                 document.getElementById('bar-sell').style.width = (data.agents_sell / total * 100) + '%';
 
-                // 6. Positions
+                // 6. Positions en cours
                 const posContainer = document.getElementById('positions-container');
                 const posTitle = document.getElementById('positions-title');
                 const openPos = data.open_positions || [];
@@ -550,8 +574,9 @@
                     let html = '<table>';
                     html += '<tr><th>TYPE</th><th>LOTS</th><th>PRIX</th><th>SL / TP</th></tr>';
                     openPos.forEach(p => {
+                        const typeText = p.type === 'BUY' ? 'ACHAT' : 'VENTE';
                         html += `<tr>
-                            <td class="${p.type === 'BUY' ? 'buy' : 'sell'}">${p.type}</td>
+                            <td class="${p.type === 'BUY' ? 'buy' : 'sell'}">${typeText}</td>
                             <td>${p.volume}</td>
                             <td>${p.price_open}</td>
                             <td style="font-size: 0.7rem; color: var(--text-muted);">SL: ${p.sl} / TP: ${p.tp}</td>
@@ -565,7 +590,10 @@
 
                 const statusEl = document.getElementById('connection-status');
                 statusEl.className = 'badge-status';
-                statusEl.innerHTML = '<div class="pulse-dot"></div><span>ONLINE</span>';
+                statusEl.style.background = 'rgba(16, 185, 129, 0.15)';
+                statusEl.style.borderColor = 'rgba(16, 185, 129, 0.5)';
+                statusEl.style.color = 'var(--accent-emerald)';
+                statusEl.innerHTML = '<div class="pulse-dot"></div><span>EN LIGNE</span>';
 
             } catch (error) {
                 console.error("Erreur MiniApp :", error);
@@ -574,7 +602,7 @@
                 statusEl.style.background = 'rgba(244, 63, 94, 0.15)';
                 statusEl.style.borderColor = 'rgba(244, 63, 94, 0.5)';
                 statusEl.style.color = 'var(--accent-rose)';
-                statusEl.innerHTML = '<div style="width:6px; height:6px; background:var(--accent-rose); border-radius:50%; box-shadow:0 0 10px var(--accent-rose);"></div><span>OFFLINE</span>';
+                statusEl.innerHTML = '<div style="width:6px; height:6px; background:var(--accent-rose); border-radius:50%; box-shadow:0 0 10px var(--accent-rose);"></div><span>HORS LIGNE</span>';
             }
         }
 
