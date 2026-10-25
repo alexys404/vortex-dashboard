@@ -47,12 +47,7 @@
         .muted { color: var(--muted); }
 
         /* ---------- En-tête ---------- */
-        .topbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 14px 0 10px;
-        }
+        .topbar { display: flex; align-items: center; justify-content: space-between; padding: 14px 0 10px; }
         .brand { display: flex; align-items: baseline; gap: 8px; }
         .brand strong { font-size: 1.05rem; font-weight: 700; letter-spacing: 0.2px; }
         .brand span { font-size: 0.8rem; color: var(--muted); }
@@ -64,7 +59,7 @@
             background: var(--panel); border: 1px solid var(--line);
         }
         .conn i { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); display: block; }
-        .conn.online i { background: var(--buy); box-shadow: 0 0 0 0 rgba(45, 212, 160, .6); animation: beat 2s infinite; }
+        .conn.online i { background: var(--buy); animation: beat 2s infinite; }
         .conn.offline i { background: var(--sell); }
         @keyframes beat {
             0% { box-shadow: 0 0 0 0 rgba(45, 212, 160, .55); }
@@ -73,26 +68,18 @@
         }
 
         .banner {
-            margin: 4px 0 8px;
-            padding: 10px 12px;
-            border-radius: 10px;
-            background: rgba(255, 92, 122, 0.10);
-            border: 1px solid rgba(255, 92, 122, 0.35);
-            font-size: 0.82rem;
-            line-height: 1.4;
+            margin: 4px 0 8px; padding: 10px 12px; border-radius: 10px;
+            background: rgba(255, 92, 122, 0.10); border: 1px solid rgba(255, 92, 122, 0.35);
+            font-size: 0.82rem; line-height: 1.4;
         }
 
-        /* ---------- Aperçu : capital ---------- */
+        /* ---------- Capital ---------- */
         .hero { padding: 14px 0 6px; }
         .hero-label { font-size: 0.82rem; color: var(--muted); margin-bottom: 4px; }
         .equity { font-size: 2.5rem; font-weight: 700; letter-spacing: -1px; line-height: 1.05; }
         .equity small { font-size: 1.1rem; color: var(--muted); margin-left: 4px; font-weight: 500; }
         .hero-meta { display: flex; align-items: center; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
-        .chip {
-            font-size: 0.8rem; font-weight: 600;
-            padding: 4px 10px; border-radius: 999px;
-            background: var(--panel); border: 1px solid var(--line);
-        }
+        .chip { font-size: 0.8rem; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: var(--panel); border: 1px solid var(--line); }
         .chip.up { color: var(--buy); border-color: rgba(45, 212, 160, .35); background: rgba(45, 212, 160, .08); }
         .chip.down { color: var(--sell); border-color: rgba(255, 92, 122, .35); background: rgba(255, 92, 122, .08); }
 
@@ -103,38 +90,74 @@
         .spark.down .line { stroke: var(--sell); }
         .spark-note { font-size: 0.72rem; color: var(--muted); margin-top: 4px; }
 
-        /* ---------- Aperçu : décision ---------- */
+        /* ---------- Décision + noyau ---------- */
         .decision {
             margin-top: 18px;
             background: var(--panel);
             border: 1px solid var(--line);
             border-radius: 20px;
-            padding: 20px 18px 18px;
+            padding: 14px 16px 18px;
         }
-        .ring-wrap { display: flex; align-items: center; gap: 18px; }
-        .ring { position: relative; width: 132px; height: 132px; flex: none; }
-        .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
-        .ring .track { fill: none; stroke: var(--panel-2); stroke-width: 10; }
-        .ring .arc {
-            fill: none; stroke: var(--gold); stroke-width: 10; stroke-linecap: round;
-            stroke-dasharray: 0 400;
-            transition: stroke-dasharray 1s cubic-bezier(.3, .7, .2, 1), stroke .4s;
-        }
-        .ring-center {
-            position: absolute; inset: 0;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-        .ring-center b { font-size: 1.2rem; font-weight: 700; }
-        .ring-center span { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
 
+        .nucleus { max-width: 360px; margin: 0 auto; }
+        #nucleus {
+            display: block; width: 100%; height: auto; overflow: visible;
+            color: var(--gold);
+            transition: color .6s;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+        .orbit { fill: none; stroke: var(--line); stroke-width: 1; }
+        .twinkle { animation: twinkle 3.6s ease-in-out infinite; }
+        @keyframes twinkle { 0%, 100% { opacity: .2; } 50% { opacity: 1; } }
+
+        .halo {
+            transform-box: fill-box; transform-origin: center;
+            animation: breathe 3.6s ease-in-out infinite;
+            transition: opacity .8s;
+        }
+        @keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+
+        .planet { fill: currentColor; }
+        .rim { fill: none; stroke: currentColor; stroke-opacity: .7; stroke-width: 1.5; filter: url(#glow); }
+        .core-word {
+            font: 700 15px var(--font-ui); fill: #fff; text-anchor: middle;
+            stroke: rgba(7, 11, 20, .5); stroke-width: 3px; paint-order: stroke;
+        }
+        .core-score {
+            font: 700 10.5px var(--font-num); fill: #fff; text-anchor: middle;
+            stroke: rgba(7, 11, 20, .5); stroke-width: 3px; paint-order: stroke; opacity: .9;
+        }
+
+        .spoke { stroke: transparent; stroke-width: 1.2; }
+        .spoke.buy, .spoke.sell { stroke-opacity: .55; stroke-dasharray: 3 5; animation: flow 1.1s linear infinite; }
+        .spoke.buy { stroke: var(--buy); }
+        .spoke.sell { stroke: var(--sell); }
+        @keyframes flow { to { stroke-dashoffset: -8; } }
+
+        .node { cursor: pointer; }
+        .node .body { fill: #18223c; stroke: #38466f; stroke-width: 1.5; transition: fill .4s, stroke .4s; }
+        .node.buy .body { fill: var(--buy); stroke: #b9f5e2; filter: url(#glow); }
+        .node.sell .body { fill: var(--sell); stroke: #ffd0d9; filter: url(#glow); }
+        .node .sel-ring { fill: none; stroke: var(--text); stroke-width: 1.5; opacity: 0; }
+        .node.sel .sel-ring { opacity: .85; }
+        .node.flash .body { transform-box: fill-box; transform-origin: center; animation: pop .7s ease-out; }
+        @keyframes pop { 0% { transform: scale(1.7); } 100% { transform: scale(1); } }
+
+        .orbit-key { margin: 4px 0 0; text-align: center; font-size: 0.72rem; color: var(--muted); }
+
+        .node-caption {
+            min-height: 2.6em;
+            margin: 6px 0 0; text-align: center;
+            font-size: 0.82rem; line-height: 1.4; color: var(--muted);
+        }
+        .node-caption b { color: var(--text); font-weight: 600; }
+
+        .decision-text { margin-top: 10px; text-align: center; }
         .decision-text h2 { margin: 0 0 6px; font-size: 1.05rem; font-weight: 600; }
         .decision-text p { margin: 0; font-size: 0.85rem; line-height: 1.45; color: var(--muted); }
 
-        .ai {
-            margin-top: 18px;
-            padding-top: 16px;
-            border-top: 1px solid var(--line);
-        }
+        .ai { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
         .ai-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
         .ai-head h3 { margin: 0; font-size: 0.9rem; font-weight: 600; color: var(--ai); }
         .ai-verdict { font-size: 0.95rem; font-weight: 700; }
@@ -144,27 +167,23 @@
         .meter-legend { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--muted); margin-top: 6px; }
         .reason { margin: 12px 0 0; font-size: 0.85rem; line-height: 1.5; color: #c4cde0; word-break: break-word; }
 
-        /* ---------- Bandeau de stats ---------- */
+        /* ---------- Stats ---------- */
         .strip { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 18px; }
         .strip > div { padding: 4px 0 4px 14px; border-left: 1px solid var(--line); }
         .strip > div:first-child { padding-left: 0; border-left: 0; }
         .strip dt { font-size: 0.75rem; color: var(--muted); margin-bottom: 4px; }
         .strip dd { margin: 0; font-size: 1.15rem; font-weight: 700; }
 
-        /* ---------- Sections génériques ---------- */
+        /* ---------- Sections ---------- */
         h2.section { font-size: 1rem; font-weight: 600; margin: 24px 0 12px; }
         .rows { border-top: 1px solid var(--line); }
-        .row {
-            display: flex; justify-content: space-between; align-items: center; gap: 12px;
-            padding: 13px 0; border-bottom: 1px solid var(--line); font-size: 0.9rem;
-        }
+        .row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--line); font-size: 0.9rem; }
         .row > span:first-child { color: var(--muted); }
         .row b { font-weight: 600; text-align: right; }
         .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 7px; background: var(--gold); }
         .dot.buy { background: var(--buy); }
         .dot.sell { background: var(--sell); }
 
-        /* ---------- Analyse ---------- */
         .split { display: flex; height: 10px; border-radius: 5px; overflow: hidden; background: var(--panel-2); gap: 2px; }
         .split i { display: block; height: 100%; transition: width .6s ease; }
         .split .b { background: var(--buy); }
@@ -186,13 +205,7 @@
         .agent em { font-style: normal; font-size: 0.72rem; color: var(--muted); }
 
         /* ---------- Positions ---------- */
-        .pos {
-            background: var(--panel);
-            border: 1px solid var(--line);
-            border-radius: 16px;
-            padding: 14px 16px;
-            margin-bottom: 10px;
-        }
+        .pos { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; margin-bottom: 10px; }
         .pos-top { display: flex; justify-content: space-between; align-items: center; }
         .pos-type { font-weight: 700; font-size: 1rem; }
         .pos-type small { font-weight: 500; color: var(--muted); margin-left: 6px; font-size: 0.8rem; }
@@ -206,7 +219,7 @@
         /* ---------- Navigation ---------- */
         .tabbar {
             position: fixed; left: 0; right: 0; bottom: 0;
-            display: flex; justify-content: center; gap: 6px;
+            display: flex; justify-content: center;
             padding: 8px 16px calc(8px + env(safe-area-inset-bottom, 0px));
             background: rgba(7, 11, 20, 0.92);
             backdrop-filter: blur(14px);
@@ -214,16 +227,12 @@
         }
         .tabbar .inner { display: flex; width: 100%; max-width: 560px; gap: 6px; }
         .tabbar button {
-            flex: 1; border: 0; cursor: pointer;
-            padding: 11px 0; border-radius: 12px;
+            flex: 1; border: 0; cursor: pointer; padding: 11px 0; border-radius: 12px;
             background: transparent; color: var(--muted);
             font-family: var(--font-ui); font-size: 0.88rem; font-weight: 600;
         }
         .tabbar button[aria-selected="true"] { background: var(--panel-2); color: var(--gold); }
-        .tabbar button .badge {
-            display: inline-block; min-width: 18px; padding: 1px 5px; margin-left: 5px;
-            border-radius: 9px; background: var(--gold); color: var(--ink); font-size: 0.72rem;
-        }
+        .tabbar button .badge { display: inline-block; min-width: 18px; padding: 1px 5px; margin-left: 5px; border-radius: 9px; background: var(--gold); color: var(--ink); font-size: 0.72rem; }
 
         :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
         [hidden] { display: none !important; }
@@ -268,21 +277,15 @@
         </section>
 
         <section class="decision">
-            <div class="ring-wrap">
-                <div class="ring">
-                    <svg viewBox="0 0 128 128" aria-hidden="true">
-                        <circle class="track" cx="64" cy="64" r="52"/>
-                        <circle id="arc" class="arc" cx="64" cy="64" r="52"/>
-                    </svg>
-                    <div class="ring-center">
-                        <b id="signal-word">--</b>
-                        <span id="signal-score">consensus</span>
-                    </div>
-                </div>
-                <div class="decision-text">
-                    <h2 id="signal-title">En attente d'analyse</h2>
-                    <p id="signal-sub">Les 15 agents votent à chaque bougie de 5 minutes.</p>
-                </div>
+            <div class="nucleus">
+                <svg id="nucleus" viewBox="-180 -180 360 360" role="img" aria-label="Système planétaire : le consensus au centre, les 15 agents en orbite"></svg>
+            </div>
+            <p id="node-caption" class="node-caption">Connexion au bot…</p>
+            <p class="orbit-key">Orbites, du centre vers l'extérieur : tendance, retour à la moyenne, structure et élan, modèle IA.</p>
+
+            <div class="decision-text">
+                <h2 id="signal-title">En attente d'analyse</h2>
+                <p id="signal-sub">Les 15 agents votent à chaque bougie de 5 minutes.</p>
             </div>
 
             <div class="ai">
@@ -367,12 +370,16 @@
     function haptic(kind) {
         try { if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred(kind); } catch (e) {}
     }
+    function tick() {
+        try { if (tg && tg.HapticFeedback) tg.HapticFeedback.selectionChanged(); } catch (e) {}
+    }
 
     /* ---------- Configuration ---------- */
     const API_URL = "https://char-aim-ensuring-improving.trycloudflare.com/api/status";
     const POLL_MS = 3000;
     const TIMEOUT_MS = 8000;
     const DEEPSEEK_MIN_CONFIDENCE = 65;   // même valeur que dans le bot
+    const STALE_SECONDS = 180;            // utilisé seulement si l'API envoie "last_update"
     const SPARK_STEP_MS = 15000;
     const SPARK_MAX = 480;
     const STORE_KEY = 'vortex_equity_v1';
@@ -432,10 +439,7 @@
         const min = Math.min(...vals), max = Math.max(...vals);
         const span = (max - min) || 1;
         const W = 300, H = 64, pad = 4;
-        const pts = vals.map((v, i) => [
-            (i / (vals.length - 1)) * W,
-            H - pad - ((v - min) / span) * (H - pad * 2)
-        ]);
+        const pts = vals.map((v, i) => [(i / (vals.length - 1)) * W, H - pad - ((v - min) / span) * (H - pad * 2)]);
         const line = pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
         $('spark-line').setAttribute('d', line);
         $('spark-area').setAttribute('d', line + ` L ${W} ${H} L 0 ${H} Z`);
@@ -447,33 +451,216 @@
         box.hidden = false;
     }
 
+    /* ==========================================================
+       SYSTÈME PLANÉTAIRE : le consensus au centre, les 15 agents en orbite
+       Chaque orbite regroupe une famille de stratégies.
+       ========================================================== */
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+    const R_PLANET = 38;
+    const ORBITS = [
+        { name: 'Tendance',            r: 70,  dur: 70,  dir:  1, agents: [1, 2, 3, 12] },
+        { name: 'Retour à la moyenne', r: 100, dur: 95,  dir: -1, agents: [5, 6, 7, 8, 13] },
+        { name: 'Structure et élan',   r: 130, dur: 125, dir:  1, agents: [4, 9, 10, 11, 14] },
+        { name: 'Modèle IA',           r: 158, dur: 160, dir: -1, agents: [0] }
+    ];
+    const nodes = new Array(15);   // indexé par numéro d'agent : { g, spoke, state, orbit }
+    let haloEl = null;
+    let selected = -1;
+    let lastVotes = null;
+    let lastCounts = { b: 0, s: 0, n: 0 };
+
+    function svgEl(name, attrs, parent) {
+        const e = document.createElementNS(SVG_NS, name);
+        for (const k in attrs) e.setAttribute(k, attrs[k]);
+        if (parent) parent.appendChild(e);
+        return e;
+    }
+
+    function rng(seed) {   // générateur déterministe : les étoiles ne bougent pas d'un chargement à l'autre
+        return function () {
+            seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+            let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+            t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+            return ((t ^ t >>> 14) >>> 0) / 4294967296;
+        };
+    }
+
+    function spin(group, dur, dir) {
+        if (reduceMotion) return;
+        svgEl('animateTransform', {
+            attributeName: 'transform', type: 'rotate',
+            from: dir > 0 ? '0' : '360', to: dir > 0 ? '360' : '0',
+            dur: dur + 's', repeatCount: 'indefinite'
+        }, group);
+    }
+
+    function buildNucleus() {
+        const svg = $('nucleus');
+        const defs = svgEl('defs', {}, svg);
+
+        const halo = svgEl('radialGradient', { id: 'haloGrad' }, defs);
+        svgEl('stop', { offset: '0', 'stop-color': 'currentColor', 'stop-opacity': '0.55' }, halo);
+        svgEl('stop', { offset: '1', 'stop-color': 'currentColor', 'stop-opacity': '0' }, halo);
+
+        const gal = svgEl('radialGradient', { id: 'galGrad' }, defs);
+        svgEl('stop', { offset: '0', 'stop-color': '#b18cff', 'stop-opacity': '0.26' }, gal);
+        svgEl('stop', { offset: '1', 'stop-color': '#b18cff', 'stop-opacity': '0' }, gal);
+
+        const shade = svgEl('radialGradient', { id: 'shadeGrad', cx: '32%', cy: '28%', r: '85%' }, defs);
+        svgEl('stop', { offset: '0', 'stop-color': '#ffffff', 'stop-opacity': '0.38' }, shade);
+        svgEl('stop', { offset: '0.45', 'stop-color': '#ffffff', 'stop-opacity': '0' }, shade);
+        svgEl('stop', { offset: '1', 'stop-color': '#070b14', 'stop-opacity': '0.6' }, shade);
+
+        const glow = svgEl('filter', { id: 'glow', x: '-80%', y: '-80%', width: '260%', height: '260%' }, defs);
+        svgEl('feGaussianBlur', { stdDeviation: '3', result: 'b' }, glow);
+        const merge = svgEl('feMerge', {}, glow);
+        svgEl('feMergeNode', { in: 'b' }, merge);
+        svgEl('feMergeNode', { in: 'SourceGraphic' }, merge);
+
+        const clip = svgEl('clipPath', { id: 'planetClip' }, defs);
+        svgEl('circle', { r: R_PLANET }, clip);
+
+        // Étoiles
+        const rand = rng(7);
+        const stars = svgEl('g', {}, svg);
+        for (let i = 0; i < 48; i++) {
+            const a = rand() * Math.PI * 2, d = 20 + Math.sqrt(rand()) * 160;
+            const s = svgEl('circle', {
+                cx: (d * Math.cos(a)).toFixed(1), cy: (d * Math.sin(a)).toFixed(1),
+                r: (0.4 + rand() * 0.8).toFixed(2), fill: '#cfd8ee',
+                'fill-opacity': (0.25 + rand() * 0.5).toFixed(2)
+            }, stars);
+            if (rand() < 0.35) { s.setAttribute('class', 'twinkle'); s.style.animationDelay = (rand() * 4).toFixed(1) + 's'; }
+        }
+
+        // Galaxie lointaine, très lente
+        const galaxy = svgEl('g', {}, svg);
+        svgEl('ellipse', { rx: 175, ry: 62, fill: 'url(#galGrad)', transform: 'rotate(28)' }, galaxy);
+        svgEl('ellipse', { rx: 150, ry: 48, fill: 'none', stroke: '#b18cff', 'stroke-opacity': '0.16', 'stroke-width': '1.2', 'stroke-dasharray': '1 5', transform: 'rotate(28)' }, galaxy);
+        svgEl('ellipse', { rx: 165, ry: 40, fill: 'none', stroke: '#e8b84a', 'stroke-opacity': '0.12', 'stroke-width': '1.2', 'stroke-dasharray': '1 6', transform: 'rotate(-35)' }, galaxy);
+        spin(galaxy, 320, -1);
+
+        // Orbites et agents
+        ORBITS.forEach((o, oi) => {
+            svgEl('circle', { class: 'orbit', r: o.r }, svg);
+            const grp = svgEl('g', {}, svg);
+            spin(grp, o.dur, o.dir);
+            const spokes = svgEl('g', {}, grp);
+            const bodies = svgEl('g', {}, grp);
+
+            o.agents.forEach((idx, j) => {
+                const a = (j / o.agents.length) * Math.PI * 2 + oi * 0.9 - Math.PI / 2;
+                const x = o.r * Math.cos(a), y = o.r * Math.sin(a);
+                const ex = (R_PLANET + 6) * Math.cos(a), ey = (R_PLANET + 6) * Math.sin(a);
+                const big = (idx === 0);
+
+                const spoke = svgEl('line', { class: 'spoke', x1: x.toFixed(1), y1: y.toFixed(1), x2: ex.toFixed(1), y2: ey.toFixed(1) }, spokes);
+                const g = svgEl('g', { class: 'node', transform: `translate(${x.toFixed(1)} ${y.toFixed(1)})` }, bodies);
+                svgEl('circle', { r: 18, fill: 'transparent' }, g);                       // zone tactile
+                svgEl('circle', { class: 'sel-ring', r: big ? 17 : 14 }, g);
+                svgEl('circle', { class: 'body', r: big ? 11 : 8 }, g);
+                g.addEventListener('click', () => selectNode(idx));
+                nodes[idx] = { g, spoke, state: '', orbit: o.name };
+            });
+        });
+
+        // Halo et planète centrale
+        haloEl = svgEl('circle', { class: 'halo', r: 76, fill: 'url(#haloGrad)' }, svg);
+        haloEl.style.opacity = '0.3';
+        const planet = svgEl('g', {}, svg);
+        svgEl('circle', { class: 'planet', r: R_PLANET }, planet);
+        const bands = svgEl('g', { 'clip-path': 'url(#planetClip)' }, planet);
+        [[-17, 4], [-5, 6], [9, 5], [21, 4]].forEach(([y, h]) =>
+            svgEl('rect', { x: -R_PLANET, y: y, width: R_PLANET * 2, height: h, fill: '#fff', 'fill-opacity': '0.09' }, bands));
+        svgEl('circle', { r: R_PLANET, fill: 'url(#shadeGrad)' }, planet);
+        svgEl('circle', { class: 'rim', r: R_PLANET }, planet);
+        svgEl('text', { id: 'core-word', class: 'core-word', x: 0, y: -1 }, planet).textContent = '--';
+        svgEl('text', { id: 'core-score', class: 'core-score', x: 0, y: 14 }, planet).textContent = '';
+
+        // Le système se fige pendant que tu touches une planète, puis repart
+        let resumeTimer = null;
+        svg.addEventListener('pointerdown', () => { clearTimeout(resumeTimer); try { svg.pauseAnimations(); } catch (e) {} });
+        const resume = () => { clearTimeout(resumeTimer); resumeTimer = setTimeout(() => { try { svg.unpauseAnimations(); } catch (e) {} }, 1800); };
+        svg.addEventListener('pointerup', resume);
+        svg.addEventListener('pointercancel', resume);
+    }
+
+    function voteLabel(v) { return v === 1 ? 'achat' : (v === -1 ? 'vente' : 'neutre'); }
+
+    function selectNode(idx) {
+        selected = (selected === idx) ? -1 : idx;
+        tick();
+        nodes.forEach((n, k) => { if (n) n.g.classList.toggle('sel', k === selected); });
+        renderCaption();
+    }
+
+    function renderCaption() {
+        const cap = $('node-caption');
+        if (selected >= 0 && lastVotes && nodes[selected]) {
+            cap.innerHTML = `<b>${AGENT_NAMES[selected]}</b><br>Orbite « ${nodes[selected].orbit} », vote ${voteLabel(lastVotes[selected])}`;
+            return;
+        }
+        if (!lastVotes) {
+            cap.textContent = 'Le détail des 15 votes n\'est pas fourni par le bot.';
+            return;
+        }
+        const c = lastCounts;
+        cap.textContent = `${c.b} pour l'achat, ${c.s} pour la vente, ${c.n} neutres. Touche une planète pour voir l'agent.`;
+    }
+
+    function updateNucleus(votes, key, score) {
+        const colors = { BUY: 'var(--buy)', SELL: 'var(--sell)', NEUTRAL: 'var(--gold)' };
+        $('nucleus').style.color = colors[key];
+        haloEl.style.opacity = (0.25 + (score / 100) * 0.75).toFixed(2);
+
+        const have = Array.isArray(votes) && votes.length === 15;
+        lastVotes = have ? votes : null;
+
+        nodes.forEach((n, i) => {
+            if (!n) return;
+            const v = have ? votes[i] : 0;
+            const st = v === 1 ? 'buy' : (v === -1 ? 'sell' : '');
+            if (n.state !== st) {
+                const firstPaint = (n.state === '' && st === '');
+                n.g.classList.remove('buy', 'sell');
+                n.spoke.classList.remove('buy', 'sell');
+                if (st) { n.g.classList.add(st); n.spoke.classList.add(st); }
+                if (!firstPaint && !reduceMotion) {
+                    n.g.classList.remove('flash');
+                    void n.g.getBoundingClientRect();
+                    n.g.classList.add('flash');
+                    setTimeout(() => n.g.classList.remove('flash'), 750);
+                }
+                n.state = st;
+            }
+        });
+        renderCaption();
+    }
+
     /* ---------- Rendu ---------- */
     const SIGNAL = {
-        BUY:     { word: 'Achat', color: 'var(--buy)',  title: 'Signal d\'achat',  cls: 'buy' },
-        SELL:    { word: 'Vente', color: 'var(--sell)', title: 'Signal de vente',  cls: 'sell' },
-        NEUTRAL: { word: 'Neutre', color: 'var(--gold)', title: 'Pas de signal',   cls: 'gold' }
+        BUY:     { word: 'Achat',  title: 'Signal d\'achat' },
+        SELL:    { word: 'Vente',  title: 'Signal de vente' },
+        NEUTRAL: { word: 'Neutre', title: 'Pas de signal' }
     };
     let lastSignal = null;
     let lastPosCount = null;
-    let firstRender = true;
 
     function renderSignal(data) {
         const key = (data.consensus_signal === 'BUY' || data.consensus_signal === 'SELL') ? data.consensus_signal : 'NEUTRAL';
         const s = SIGNAL[key];
         const score = Math.max(0, Math.min(100, num(data.consensus_score)));
-        const C = 2 * Math.PI * 52;
-
-        $('arc').style.stroke = s.color;
-        $('arc').style.strokeDasharray = (score / 100 * C).toFixed(1) + ' ' + C.toFixed(1);
-        $('signal-word').textContent = s.word;
-        $('signal-word').style.color = s.color;
-        $('signal-score').textContent = score + ' % d\'accord';
-        $('signal-title').textContent = s.title;
-
         const ab = num(data.agents_buy), as = num(data.agents_sell), an = num(data.agents_neutral);
+        lastCounts = { b: ab, s: as, n: an };
+
+        $('core-word').textContent = s.word;
+        $('core-score').textContent = score + ' %';
+        $('signal-title').textContent = s.title;
         $('signal-sub').textContent = key === 'NEUTRAL'
             ? `Les agents hésitent : ${ab} pour l'achat, ${as} pour la vente. Le bot attend un accord d'au moins 58 %.`
             : `${key === 'BUY' ? ab : as} agents sur 15 vont dans ce sens. DeepSeek valide ou rejette l'entrée.`;
+
+        updateNucleus(data.votes, key, score);
 
         if (lastSignal !== null && lastSignal !== key && key !== 'NEUTRAL') haptic('success');
         lastSignal = key;
@@ -496,13 +683,13 @@
     function renderContext(data) {
         const smc = data.smc_status || 'AUCUNE';
         const smcEl = $('smc');
-        const smcCls = smc.includes('BULLISH') ? 'buy' : (smc.includes('BEARISH') ? 'sell' : 'gold');
+        const smcCls = smc.includes('BULLISH') ? 'buy' : (smc.includes('BEARISH') ? 'sell' : '');
         const smcText = smc === 'AUCUNE' ? 'Aucune zone active'
             : smc === 'ULTIMATE_BULLISH_SMC' ? 'Confluence haussière complète'
             : smc === 'ULTIMATE_BEARISH_SMC' ? 'Confluence baissière complète'
             : smc.replace(/BULLISH_/g, 'Haussier ').replace(/BEARISH_/g, 'Baissier ')
                  .replace(/SWEEP/g, 'balayage').replace(/FVG/g, 'FVG').replace(/OB/g, 'order block');
-        smcEl.innerHTML = `<span class="dot ${smcCls === 'gold' ? '' : smcCls}"></span>`;
+        smcEl.innerHTML = `<span class="dot ${smcCls}"></span>`;
         smcEl.appendChild(document.createTextNode(smcText));
 
         // L'API renvoie UP / DOWN pour le dollar (compat. ancien format BUY / SELL)
@@ -545,7 +732,7 @@
             const r = box.children[i];
             r.className = 'agent ' + (v === 1 ? 'v-buy' : (v === -1 ? 'v-sell' : ''));
             r.children[1].textContent = AGENT_NAMES[i];
-            r.children[2].textContent = v === 1 ? 'achat' : (v === -1 ? 'vente' : 'neutre');
+            r.children[2].textContent = voteLabel(v);
         });
         box.hidden = false;
     }
@@ -600,7 +787,6 @@
         pushEquity(equity);
         drawSpark();
 
-        // Stats
         const wr = num(data.win_rate);
         const wrEl = $('winrate');
         wrEl.textContent = wr.toFixed(0) + ' %';
@@ -629,7 +815,6 @@
         renderContext(data);
         renderAgents(data);
         renderPositions(positions);
-        firstRender = false;
     }
 
     /* ---------- Connexion ---------- */
@@ -653,8 +838,18 @@
             const data = await res.json();
             render(data);
             lastOk = new Date();
-            setConn(true, 'En ligne ' + Math.round(performance.now() - t0) + ' ms');
-            $('banner').hidden = true;
+            const ms = Math.round(performance.now() - t0);
+
+            // Optionnel : si le bot envoie "last_update" (heure en secondes), on détecte un bot figé
+            const banner = $('banner');
+            if (typeof data.last_update === 'number' && (Date.now() / 1000 - data.last_update) > STALE_SECONDS) {
+                setConn(false, 'Bot inactif');
+                banner.hidden = false;
+                banner.textContent = 'Le bot n\'a plus mis à jour ses données depuis plus de 3 minutes. Vérifie qu\'il tourne.';
+            } else {
+                setConn(true, 'En ligne ' + ms + ' ms');
+                banner.hidden = true;
+            }
         } catch (err) {
             console.error('Erreur Mini App :', err);
             setConn(false, 'Hors ligne');
@@ -669,6 +864,7 @@
         }
     }
 
+    buildNucleus();
     drawSpark();
     refresh();
     setInterval(refresh, POLL_MS);
