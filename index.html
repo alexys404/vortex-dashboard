@@ -144,6 +144,78 @@
         .node.flash .body { transform-box: fill-box; transform-origin: center; animation: pop .7s ease-out; }
         @keyframes pop { 0% { transform: scale(1.7); } 100% { transform: scale(1); } }
 
+        .viewswitch {
+            display: flex; gap: 4px; padding: 3px; margin: 0 auto 8px; width: max-content;
+            background: var(--panel-2); border: 1px solid var(--line); border-radius: 999px;
+        }
+        .viewswitch button {
+            border: 0; background: transparent; color: var(--muted); cursor: pointer;
+            font: 600 0.78rem var(--font-ui); padding: 6px 14px; border-radius: 999px;
+        }
+        .viewswitch button[aria-pressed="true"] { background: var(--panel); color: var(--gold); }
+
+        /* ---------- Cerveau (toile de 15 agents) ---------- */
+        #brain { display: block; width: 100%; height: auto; overflow: visible; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+        .b-disc { fill: url(#bDisc); stroke: #1e3a55; stroke-width: 1.2; }
+        .b-ring { fill: none; stroke: #3b6f93; stroke-opacity: .55; stroke-width: 1; }
+        .b-ticks { fill: none; stroke: #6fc7ee; stroke-opacity: .6; stroke-width: 5; stroke-dasharray: 1.2 8.2; }
+        .b-edge { stroke: #5fd3ff; stroke-opacity: .12; stroke-width: .6; transition: stroke .4s, stroke-opacity .4s; }
+        .b-edge.buy { stroke: var(--buy); stroke-opacity: .55; stroke-width: 1; }
+        .b-edge.sell { stroke: var(--sell); stroke-opacity: .55; stroke-width: 1; }
+        .b-node { cursor: pointer; }
+        .b-node .dot { fill: #2c4560; stroke: #6fc7ee; stroke-opacity: .5; stroke-width: 1; transition: fill .4s, stroke .4s; }
+        .b-node.buy .dot { fill: var(--buy); stroke: #d6fff1; filter: url(#bGlow); }
+        .b-node.sell .dot { fill: var(--sell); stroke: #ffe0e6; filter: url(#bGlow); }
+        .b-node .sel-ring { fill: none; stroke: var(--text); stroke-width: 1.5; opacity: 0; }
+        .b-node.sel .sel-ring { opacity: .9; }
+        .b-core { fill: currentColor; filter: url(#bGlow); }
+        .b-reticle { fill: none; stroke: currentColor; stroke-opacity: .55; stroke-width: 1; stroke-dasharray: 2 5; }
+        .b-word { font: 700 11px var(--font-ui); fill: #fff; text-anchor: middle; stroke: rgba(7,11,20,.55); stroke-width: 3px; paint-order: stroke; }
+        .b-read { display: grid; grid-template-columns: repeat(3, 1fr); margin: 6px 0 0; border: 1px solid var(--line); border-radius: 12px; background: var(--panel-2); }
+        .b-read > div { padding: 9px 6px; text-align: center; border-left: 1px solid var(--line); }
+        .b-read > div:first-child { border-left: 0; }
+        .b-read small { display: block; font: 600 0.62rem var(--font-num); letter-spacing: 1.5px; color: var(--muted); margin-bottom: 4px; }
+        .b-read b { font: 700 0.95rem var(--font-ui); }
+
+        /* ---------- Réseau de neurones ---------- */
+        #neural {
+            display: block; width: 100%; height: auto; overflow: visible;
+            color: var(--gold); transition: color .6s;
+            -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+        }
+        .mesh { stroke: #1b2744; stroke-width: .6; opacity: .6; }
+        .syn { stroke: #26324d; stroke-width: 1.2; transition: stroke .4s; }
+        .syn.buy { stroke: var(--buy); stroke-opacity: .85; stroke-width: 1.6; }
+        .syn.sell { stroke: var(--sell); stroke-opacity: .85; stroke-width: 1.6; }
+        .pulse { opacity: 0; pointer-events: none; }
+
+        .nnode { cursor: pointer; }
+        .nnode .body { fill: #18223c; stroke: #38466f; stroke-width: 1.2; transition: fill .4s, stroke .4s; }
+        .nnode.buy .body { fill: var(--buy); stroke: #b9f5e2; filter: url(#nGlow); }
+        .nnode.sell .body { fill: var(--sell); stroke: #ffd0d9; filter: url(#nGlow); }
+        .nnode .sel-ring { fill: none; stroke: var(--text); stroke-width: 1.5; opacity: 0; }
+        .nnode.sel .sel-ring { opacity: .9; }
+        .nnode.flash .body { transform-box: fill-box; transform-origin: center; animation: pop .7s ease-out; }
+
+        .hid .body { fill: #131c30; stroke: #38466f; stroke-width: 1.5; transition: fill .4s, stroke .4s; }
+        .hid.buy .body { fill: rgba(45, 212, 160, .28); stroke: var(--buy); filter: url(#nGlow); }
+        .hid.sell .body { fill: rgba(255, 92, 122, .28); stroke: var(--sell); filter: url(#nGlow); }
+        .hid text { font: 600 9.5px var(--font-ui); fill: var(--muted); text-anchor: middle; pointer-events: none; }
+        .hid.buy text { fill: var(--buy); }
+        .hid.sell text { fill: var(--sell); }
+
+        .nn-halo { transform-box: fill-box; transform-origin: center; animation: breathe 3.6s ease-in-out infinite; transition: opacity .8s; }
+        .nn-disc { fill: currentColor; }
+        .nn-rim { fill: none; stroke: currentColor; stroke-opacity: .7; stroke-width: 1.5; filter: url(#nGlow); }
+        .nn-word {
+            font: 700 15px var(--font-ui); fill: #fff; text-anchor: middle;
+            stroke: rgba(7, 11, 20, .5); stroke-width: 3px; paint-order: stroke;
+        }
+        .nn-score {
+            font: 700 10.5px var(--font-num); fill: #fff; text-anchor: middle;
+            stroke: rgba(7, 11, 20, .5); stroke-width: 3px; paint-order: stroke;
+        }
+
         .orbit-key { margin: 4px 0 0; text-align: center; font-size: 0.72rem; color: var(--muted); }
 
         .node-caption {
@@ -237,8 +309,10 @@
         :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
         [hidden] { display: none !important; }
 
-        @media (prefers-reduced-motion: reduce) {
-            * { animation: none !important; transition: none !important; }
+        .no-anim * { animation: none !important; transition: none !important; }
+        .anim-toggle {
+            background: none; border: 0; padding: 6px 0 0; font: inherit; font-size: 0.72rem;
+            color: var(--muted); text-decoration: underline; cursor: pointer;
         }
     </style>
 </head>
@@ -277,11 +351,28 @@
         </section>
 
         <section class="decision">
-            <div class="nucleus">
+            <div class="viewswitch" role="group" aria-label="Style d'affichage">
+                <button type="button" data-view="brain" aria-pressed="true">Cerveau</button>
+                <button type="button" data-view="neural" aria-pressed="false">Neurones</button>
+                <button type="button" data-view="planet" aria-pressed="false">Planète</button>
+            </div>
+            <div id="view-brain" class="nucleus">
+                <svg id="brain" viewBox="-180 -180 360 360" role="img" aria-label="Cerveau : les 15 agents reliés entre eux, le consensus au centre"></svg>
+                <div class="b-read">
+                    <div><small>BIAIS</small><b id="b-bias">--</b></div>
+                    <div><small>CONVICTION</small><b id="b-conv" class="num">--</b></div>
+                    <div><small>SOURCES</small><b id="b-src" class="num">15 agents</b></div>
+                </div>
+            </div>
+            <div id="view-neural" class="nucleus" hidden>
+                <svg id="neural" viewBox="0 0 360 372" role="img" aria-label="Réseau de neurones : les 15 agents, leurs 4 familles, puis la décision"></svg>
+            </div>
+            <div id="view-planet" class="nucleus" hidden>
                 <svg id="nucleus" viewBox="-180 -180 360 360" role="img" aria-label="Système planétaire : le consensus au centre, les 15 agents en orbite"></svg>
             </div>
             <p id="node-caption" class="node-caption">Connexion au bot…</p>
-            <p class="orbit-key">Orbites, du centre vers l'extérieur : tendance, retour à la moyenne, structure et élan, modèle IA.</p>
+            <p id="orbit-key" class="orbit-key">Orbites, du centre vers l'extérieur : tendance, retour à la moyenne, structure et élan, modèle IA.</p>
+            <div style="text-align:center"><button id="anim-toggle" class="anim-toggle" type="button"></button></div>
 
             <div class="decision-text">
                 <h2 id="signal-title">En attente d'analyse</h2>
@@ -395,12 +486,21 @@
     const num = (v, d = 0) => (typeof v === 'number' && isFinite(v)) ? v : d;
     const money = v => num(v).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const signed = v => (num(v) >= 0 ? '+' : '−') + money(Math.abs(num(v)));
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Animations : activées par défaut, sauf si le téléphone demande de les réduire.
+    // Le bouton sous le système planétaire permet de forcer l'un ou l'autre.
+    const osReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let animOn = !osReduce;
+    try {
+        const saved = localStorage.getItem('vortex_anim');
+        if (saved === '1') animOn = true;
+        else if (saved === '0') animOn = false;
+    } catch (e) {}
+    document.documentElement.classList.toggle('no-anim', !animOn);
 
     function tween(el, to, render) {
         const from = parseFloat(el.dataset.v);
         el.dataset.v = to;
-        if (reduceMotion || !isFinite(from) || from === to) { el.textContent = render(to); return; }
+        if (!animOn || !isFinite(from) || from === to) { el.textContent = render(to); return; }
         const t0 = performance.now(), dur = 600;
         (function step(t) {
             const k = Math.min(1, (t - t0) / dur);
@@ -485,13 +585,21 @@
         };
     }
 
-    function spin(group, dur, dir) {
-        if (reduceMotion) return;
-        svgEl('animateTransform', {
-            attributeName: 'transform', type: 'rotate',
-            from: dir > 0 ? '0' : '360', to: dir > 0 ? '360' : '0',
-            dur: dur + 's', repeatCount: 'indefinite'
-        }, group);
+    const spinners = [];
+    let paused = false, clock = 0, lastTs = null;
+
+    function spin(group, dur, dir) { spinners.push({ g: group, dur: dur, dir: dir }); }
+
+    function spinLoop(ts) {
+        if (lastTs !== null && !paused && animOn) clock += (ts - lastTs) / 1000;
+        lastTs = ts;
+        pulseStep();
+        brainPulseStep();
+        spinners.forEach(s => {
+            const ang = s.dir * 360 * ((clock % s.dur) / s.dur);
+            s.g.setAttribute('transform', 'rotate(' + ang.toFixed(2) + ')');
+        });
+        requestAnimationFrame(spinLoop);
     }
 
     function buildNucleus() {
@@ -579,8 +687,8 @@
 
         // Le système se fige pendant que tu touches une planète, puis repart
         let resumeTimer = null;
-        svg.addEventListener('pointerdown', () => { clearTimeout(resumeTimer); try { svg.pauseAnimations(); } catch (e) {} });
-        const resume = () => { clearTimeout(resumeTimer); resumeTimer = setTimeout(() => { try { svg.unpauseAnimations(); } catch (e) {} }, 1800); };
+        svg.addEventListener('pointerdown', () => { clearTimeout(resumeTimer); paused = true; });
+        const resume = () => { clearTimeout(resumeTimer); resumeTimer = setTimeout(() => { paused = false; }, 1800); };
         svg.addEventListener('pointerup', resume);
         svg.addEventListener('pointercancel', resume);
     }
@@ -591,6 +699,8 @@
         selected = (selected === idx) ? -1 : idx;
         tick();
         nodes.forEach((n, k) => { if (n) n.g.classList.toggle('sel', k === selected); });
+        nn.inputs.forEach((n, k) => { if (n) n.g.classList.toggle('sel', k === selected); });
+        brain.nodes.forEach((n, k) => { if (n) n.g.classList.toggle('sel', k === selected); });
         renderCaption();
     }
 
@@ -605,7 +715,7 @@
             return;
         }
         const c = lastCounts;
-        cap.textContent = `${c.b} pour l'achat, ${c.s} pour la vente, ${c.n} neutres. Touche une planète pour voir l'agent.`;
+        cap.textContent = `${c.b} pour l'achat, ${c.s} pour la vente, ${c.n} neutres. Touche ${currentView === 'planet' ? 'une planète' : (currentView === 'brain' ? 'un point' : 'un neurone')} pour voir l'agent.`;
     }
 
     function updateNucleus(votes, key, score) {
@@ -625,7 +735,7 @@
                 n.g.classList.remove('buy', 'sell');
                 n.spoke.classList.remove('buy', 'sell');
                 if (st) { n.g.classList.add(st); n.spoke.classList.add(st); }
-                if (!firstPaint && !reduceMotion) {
+                if (!firstPaint && animOn) {
                     n.g.classList.remove('flash');
                     void n.g.getBoundingClientRect();
                     n.g.classList.add('flash');
@@ -635,6 +745,320 @@
             }
         });
         renderCaption();
+    }
+
+    /* ==========================================================
+       RÉSEAU DE NEURONES : 15 agents -> 4 familles -> décision
+       ========================================================== */
+    const FAMILY_SHORT = ['Tendance', 'Retour moy.', 'Structure', 'Modèle IA'];
+    const nn = { inputs: new Array(15), hidden: [], pulses: [], haloEl: null };
+    let currentView = 'brain';
+
+    function buildNeural() {
+        const svg = $('neural');
+        const defs = svgEl('defs', {}, svg);
+
+        const halo = svgEl('radialGradient', { id: 'nHalo' }, defs);
+        svgEl('stop', { offset: '0', 'stop-color': 'currentColor', 'stop-opacity': '0.5' }, halo);
+        svgEl('stop', { offset: '1', 'stop-color': 'currentColor', 'stop-opacity': '0' }, halo);
+
+        const shade = svgEl('radialGradient', { id: 'nShade', cx: '32%', cy: '28%', r: '85%' }, defs);
+        svgEl('stop', { offset: '0', 'stop-color': '#ffffff', 'stop-opacity': '0.34' }, shade);
+        svgEl('stop', { offset: '0.45', 'stop-color': '#ffffff', 'stop-opacity': '0' }, shade);
+        svgEl('stop', { offset: '1', 'stop-color': '#070b14', 'stop-opacity': '0.55' }, shade);
+
+        const glow = svgEl('filter', { id: 'nGlow', x: '-80%', y: '-80%', width: '260%', height: '260%' }, defs);
+        svgEl('feGaussianBlur', { stdDeviation: '2.6', result: 'b' }, glow);
+        const merge = svgEl('feMerge', {}, glow);
+        svgEl('feMergeNode', { in: 'b' }, merge);
+        svgEl('feMergeNode', { in: 'SourceGraphic' }, merge);
+
+        const W = 360, Y_IN = 40, Y_HID = 186, Y_OUT = 318, R_OUT = 34, OX = 180;
+        const spacing = 21, gap = 36;
+        const widths = ORBITS.map(o => (o.agents.length - 1) * spacing);
+        let x = (W - (widths.reduce((a, b) => a + b, 0) + gap * (ORBITS.length - 1))) / 2;
+        const fam = ORBITS.map((o, k) => {
+            const start = x;
+            x += widths[k] + gap;
+            return { k, agents: o.agents, hx: start + widths[k] / 2, inX: o.agents.map((_, j) => start + j * spacing) };
+        });
+
+        nn.haloEl = svgEl('circle', { class: 'nn-halo', cx: OX, cy: Y_OUT, r: 76, fill: 'url(#nHalo)' }, svg);
+        nn.haloEl.style.opacity = '0.3';
+
+        const meshG = svgEl('g', {}, svg);
+        const synG = svgEl('g', {}, svg);
+        const pulseG = svgEl('g', {}, svg);
+        const inG = svgEl('g', {}, svg);
+        const hidG = svgEl('g', {}, svg);
+        const outG = svgEl('g', {}, svg);
+
+        const makePulse = (x1, y1, x2, y2, off) => {
+            const el = svgEl('circle', { class: 'pulse', r: 2.6, cx: x1, cy: y1 }, pulseG);
+            const p = { el, x1, y1, x2, y2, off, active: false, color: '', shown: false };
+            nn.pulses.push(p);
+            return p;
+        };
+
+        // Maillage discret entre toutes les entrées et toutes les familles
+        fam.forEach(f => {
+            fam.forEach(g2 => {
+                if (g2.k === f.k) return;
+                g2.inX.forEach(px => svgEl('line', { class: 'mesh', x1: px, y1: Y_IN + 7, x2: f.hx, y2: Y_HID - 13 }, meshG));
+            });
+        });
+
+        fam.forEach(f => {
+            // Famille -> décision
+            const hl = svgEl('line', { class: 'syn', x1: f.hx, y1: Y_HID + 13, x2: OX, y2: Y_OUT - R_OUT + 3 }, synG);
+            const hp = makePulse(f.hx, Y_HID + 13, OX, Y_OUT - R_OUT + 3, f.k * 0.23 + 0.1);
+
+            // Neurone de famille
+            const hg = svgEl('g', { class: 'hid', transform: `translate(${f.hx.toFixed(1)} ${Y_HID})` }, hidG);
+            const body = svgEl('circle', { class: 'body', r: 11 }, hg);
+            svgEl('text', { x: 0, y: 29 }, hg).textContent = FAMILY_SHORT[f.k];
+            nn.hidden[f.k] = { g: hg, line: hl, pulse: hp, body, state: '' };
+
+            // Agents -> famille
+            f.agents.forEach((idx, j) => {
+                const px = f.inX[j];
+                const line = svgEl('line', { class: 'syn', x1: px, y1: Y_IN + 7, x2: f.hx, y2: Y_HID - 13 }, synG);
+                const pulse = makePulse(px, Y_IN + 7, f.hx, Y_HID - 13, (idx * 0.137) % 1);
+                const g = svgEl('g', { class: 'nnode', transform: `translate(${px.toFixed(1)} ${Y_IN})` }, inG);
+                svgEl('circle', { r: 10, fill: 'transparent' }, g);
+                svgEl('circle', { class: 'sel-ring', r: idx === 0 ? 11.5 : 9.5 }, g);
+                svgEl('circle', { class: 'body', r: idx === 0 ? 8 : 6.5 }, g);
+                g.addEventListener('click', () => selectNode(idx));
+                nn.inputs[idx] = { g, line, pulse, state: '' };
+            });
+        });
+
+        // Neurone de décision
+        const og = svgEl('g', { transform: `translate(${OX} ${Y_OUT})` }, outG);
+        svgEl('circle', { class: 'nn-disc', r: R_OUT }, og);
+        svgEl('circle', { r: R_OUT, fill: 'url(#nShade)' }, og);
+        svgEl('circle', { class: 'nn-rim', r: R_OUT }, og);
+        svgEl('text', { id: 'nn-word', class: 'nn-word', x: 0, y: -1 }, og).textContent = '--';
+        svgEl('text', { id: 'nn-score', class: 'nn-score', x: 0, y: 14 }, og).textContent = '';
+    }
+
+    function updateNeural(votes, key, score) {
+        const colors = { BUY: 'var(--buy)', SELL: 'var(--sell)', NEUTRAL: 'var(--gold)' };
+        $('neural').style.color = colors[key];
+        nn.haloEl.style.opacity = (0.2 + (score / 100) * 0.7).toFixed(2);
+
+        const have = Array.isArray(votes) && votes.length === 15;
+        const colOf = st => st === 'buy' ? 'var(--buy)' : (st === 'sell' ? 'var(--sell)' : '');
+
+        ORBITS.forEach((o, k) => {
+            let net = 0;
+            o.agents.forEach(idx => {
+                const v = have ? votes[idx] : 0;
+                net += v;
+                const n = nn.inputs[idx];
+                const st = v === 1 ? 'buy' : (v === -1 ? 'sell' : '');
+                if (n.state !== st) {
+                    const firstPaint = (n.state === '' && st === '');
+                    n.g.classList.remove('buy', 'sell');
+                    n.line.classList.remove('buy', 'sell');
+                    if (st) { n.g.classList.add(st); n.line.classList.add(st); }
+                    if (!firstPaint && animOn) {
+                        n.g.classList.remove('flash');
+                        void n.g.getBoundingClientRect();
+                        n.g.classList.add('flash');
+                        setTimeout(() => n.g.classList.remove('flash'), 750);
+                    }
+                    n.state = st;
+                }
+                n.pulse.active = !!st;
+                n.pulse.color = colOf(st);
+            });
+
+            const hd = nn.hidden[k];
+            const hst = net > 0 ? 'buy' : (net < 0 ? 'sell' : '');
+            hd.body.setAttribute('r', (11 + (Math.abs(net) / o.agents.length) * 5).toFixed(1));
+            if (hd.state !== hst) {
+                hd.g.classList.remove('buy', 'sell');
+                hd.line.classList.remove('buy', 'sell');
+                if (hst) { hd.g.classList.add(hst); hd.line.classList.add(hst); }
+                hd.state = hst;
+            }
+            hd.pulse.active = !!hst;
+            hd.pulse.color = colOf(hst);
+        });
+        renderCaption();
+    }
+
+    function pulseStep() {
+        nn.pulses.forEach(p => {
+            if (!p.active || !animOn) {
+                if (p.shown) { p.el.style.opacity = '0'; p.shown = false; }
+                return;
+            }
+            const t = (clock * 0.5 + p.off) % 1;
+            p.el.setAttribute('cx', (p.x1 + (p.x2 - p.x1) * t).toFixed(1));
+            p.el.setAttribute('cy', (p.y1 + (p.y2 - p.y1) * t).toFixed(1));
+            p.el.style.fill = p.color;
+            p.el.style.opacity = (Math.sin(Math.PI * t) * 0.95).toFixed(2);
+            p.shown = true;
+        });
+    }
+
+    /* ==========================================================
+       CERVEAU : 15 agents sur un cercle, tous reliés entre eux.
+       Deux agents qui votent dans le même sens allument leur lien.
+       ========================================================== */
+    const brain = { nodes: [], edges: [], pulses: [], haloEl: null, coreEl: null, active: [] };
+
+    function buildBrain() {
+        const svg = $('brain');
+        const defs = svgEl('defs', {}, svg);
+        const disc = svgEl('radialGradient', { id: 'bDisc' }, defs);
+        svgEl('stop', { offset: '0', 'stop-color': '#10243a' }, disc);
+        svgEl('stop', { offset: '1', 'stop-color': '#08111f' }, disc);
+        const halo = svgEl('radialGradient', { id: 'bHalo' }, defs);
+        svgEl('stop', { offset: '0', 'stop-color': 'currentColor', 'stop-opacity': '0.5' }, halo);
+        svgEl('stop', { offset: '1', 'stop-color': 'currentColor', 'stop-opacity': '0' }, halo);
+        const glow = svgEl('filter', { id: 'bGlow', x: '-100%', y: '-100%', width: '300%', height: '300%' }, defs);
+        svgEl('feGaussianBlur', { stdDeviation: '2.6', result: 'b' }, glow);
+        const m = svgEl('feMerge', {}, glow);
+        svgEl('feMergeNode', { in: 'b' }, m);
+        svgEl('feMergeNode', { in: 'SourceGraphic' }, m);
+
+        // Couronne graduée qui tourne lentement
+        const ticks = svgEl('g', {}, svg);
+        svgEl('circle', { class: 'b-ticks', r: 170 }, ticks);
+        spin(ticks, 240, 1);
+        svgEl('circle', { class: 'b-ring', r: 160 }, svg);
+        svgEl('circle', { class: 'b-disc', r: 146 }, svg);
+
+        // Halo central
+        brain.haloEl = svgEl('circle', { class: 'halo', r: 70, fill: 'url(#bHalo)' }, svg);
+
+        // Points des 15 agents
+        const R = 122;
+        const pts = [];
+        for (let i = 0; i < 15; i++) {
+            const a = (-90 + i * 24) * Math.PI / 180;
+            pts.push([R * Math.cos(a), R * Math.sin(a)]);
+        }
+
+        // Toile : les 105 liens entre agents
+        const edgeLayer = svgEl('g', {}, svg);
+        for (let i = 0; i < 15; i++) {
+            for (let j = i + 1; j < 15; j++) {
+                const el = svgEl('line', { class: 'b-edge', x1: pts[i][0].toFixed(1), y1: pts[i][1].toFixed(1), x2: pts[j][0].toFixed(1), y2: pts[j][1].toFixed(1) }, edgeLayer);
+                brain.edges.push({ el, i, j, st: '' });
+            }
+        }
+        const pulseLayer = svgEl('g', {}, svg);
+        for (let k = 0; k < 14; k++) {
+            const c = svgEl('circle', { r: 2.2, fill: '#fff' }, pulseLayer);
+            c.style.opacity = '0';
+            brain.pulses.push({ el: c, off: k / 14, cycle: -1, edge: null, shown: false });
+        }
+
+        // Noyau central (réticule + disque)
+        const core = svgEl('g', {}, svg);
+        const ret = svgEl('g', {}, core);
+        svgEl('circle', { class: 'b-reticle', r: 40 }, ret);
+        spin(ret, 60, -1);
+        brain.coreEl = svgEl('circle', { class: 'b-core', r: 24 }, core);
+        svgEl('text', { id: 'b-word', class: 'b-word', x: 0, y: 4 }, core).textContent = '--';
+
+        // Nœuds
+        const nodeLayer = svgEl('g', {}, svg);
+        pts.forEach((pt, i) => {
+            const g = svgEl('g', { class: 'b-node', transform: `translate(${pt[0].toFixed(1)} ${pt[1].toFixed(1)})` }, nodeLayer);
+            svgEl('circle', { r: 16, fill: 'transparent' }, g);
+            svgEl('circle', { class: 'sel-ring', r: 10 }, g);
+            svgEl('circle', { class: 'dot', r: i === 0 ? 5.6 : 4.2 }, g);
+            g.addEventListener('click', () => selectNode(i));
+            brain.nodes[i] = { g, state: '' };
+        });
+    }
+
+    function updateBrain(votes, key, score) {
+        const have = Array.isArray(votes) && votes.length === 15;
+        const colors = { BUY: 'var(--buy)', SELL: 'var(--sell)', NEUTRAL: 'var(--cyan, #5fd3ff)' };
+        $('brain').style.color = colors[key];
+        brain.haloEl.style.opacity = (0.25 + (score / 100) * 0.75).toFixed(2);
+        $('b-word').textContent = key === 'BUY' ? 'Achat' : (key === 'SELL' ? 'Vente' : 'Neutre');
+
+        brain.nodes.forEach((n, i) => {
+            const st = have ? (votes[i] === 1 ? 'buy' : (votes[i] === -1 ? 'sell' : '')) : '';
+            if (n.state !== st) {
+                n.g.classList.remove('buy', 'sell');
+                if (st) n.g.classList.add(st);
+                n.state = st;
+            }
+        });
+
+        brain.active = [];
+        brain.edges.forEach(e => {
+            const a = brain.nodes[e.i].state, b = brain.nodes[e.j].state;
+            const st = (a && a === b) ? a : '';
+            if (e.st !== st) {
+                e.el.classList.remove('buy', 'sell');
+                if (st) e.el.classList.add(st);
+                e.st = st;
+            }
+            if (st) brain.active.push(e);
+        });
+
+        const bias = $('b-bias');
+        bias.textContent = key === 'BUY' ? 'HAUSSIER' : (key === 'SELL' ? 'BAISSIER' : 'NEUTRE');
+        bias.style.color = key === 'BUY' ? 'var(--buy)' : (key === 'SELL' ? 'var(--sell)' : 'var(--gold)');
+        $('b-conv').textContent = score + ' %';
+        const act = have ? votes.filter(v => v !== 0).length : 0;
+        $('b-src').textContent = have ? `${act} / 15 actifs` : '15 agents';
+    }
+
+    function brainPulseStep() {
+        const list = brain.active;
+        brain.pulses.forEach(p => {
+            if (!animOn || !list.length) {
+                if (p.shown) { p.el.style.opacity = '0'; p.shown = false; }
+                return;
+            }
+            const u = clock * 0.45 + p.off;
+            const cyc = Math.floor(u);
+            if (cyc !== p.cycle || !p.edge || p.edge.st === '') {
+                p.cycle = cyc;
+                p.edge = list[Math.floor(Math.random() * list.length)];
+            }
+            const t = u - cyc;
+            const e = p.edge;
+            const A = brain.nodes[e.i].g.transform.baseVal.getItem(0).matrix;
+            const B = brain.nodes[e.j].g.transform.baseVal.getItem(0).matrix;
+            const fwd = (cyc % 2 === 0);
+            const x = fwd ? A.e + (B.e - A.e) * t : B.e + (A.e - B.e) * t;
+            const y = fwd ? A.f + (B.f - A.f) * t : B.f + (A.f - B.f) * t;
+            p.el.setAttribute('cx', x.toFixed(1));
+            p.el.setAttribute('cy', y.toFixed(1));
+            p.el.style.fill = e.st === 'buy' ? '#9bf5d6' : '#ffb3c1';
+            p.el.style.opacity = (Math.sin(Math.PI * t) * 0.95).toFixed(2);
+            p.shown = true;
+        });
+    }
+
+    function setView(v) {
+        currentView = v;
+        $('view-brain').hidden = (v !== 'brain');
+        $('view-neural').hidden = (v !== 'neural');
+        $('view-planet').hidden = (v !== 'planet');
+        document.querySelectorAll('.viewswitch button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.view === v)));
+        $('orbit-key').textContent = v === 'brain'
+            ? 'Les 15 agents sont reliés entre eux : un lien s\'allume quand deux agents votent dans le même sens.'
+            : v === 'neural'
+            ? 'De haut en bas : les 15 agents, leurs 4 familles (tendance, retour à la moyenne, structure, modèle IA), puis la décision.'
+            : 'Orbites, du centre vers l\'extérieur : tendance, retour à la moyenne, structure et élan, modèle IA.';
+        selected = -1;
+        nodes.forEach(n => { if (n) n.g.classList.remove('sel'); });
+        nn.inputs.forEach(n => { if (n) n.g.classList.remove('sel'); });
+        brain.nodes.forEach(n => { if (n) n.g.classList.remove('sel'); });
+        renderCaption();
+        try { localStorage.setItem('vortex_view2', v); } catch (e) {}
     }
 
     /* ---------- Rendu ---------- */
@@ -655,12 +1079,16 @@
 
         $('core-word').textContent = s.word;
         $('core-score').textContent = score + ' %';
+        $('nn-word').textContent = s.word;
+        $('nn-score').textContent = score + ' %';
         $('signal-title').textContent = s.title;
         $('signal-sub').textContent = key === 'NEUTRAL'
             ? `Les agents hésitent : ${ab} pour l'achat, ${as} pour la vente. Le bot attend un accord d'au moins 58 %.`
             : `${key === 'BUY' ? ab : as} agents sur 15 vont dans ce sens. DeepSeek valide ou rejette l'entrée.`;
 
         updateNucleus(data.votes, key, score);
+        updateNeural(data.votes, key, score);
+        updateBrain(data.votes, key, score);
 
         if (lastSignal !== null && lastSignal !== key && key !== 'NEUTRAL') haptic('success');
         lastSignal = key;
@@ -864,7 +1292,25 @@
         }
     }
 
+    function renderAnimToggle() {
+        $('anim-toggle').textContent = animOn ? 'Animations activées (toucher pour couper)' : 'Animations coupées (toucher pour activer)';
+    }
+    $('anim-toggle').addEventListener('click', () => {
+        animOn = !animOn;
+        document.documentElement.classList.toggle('no-anim', !animOn);
+        try { localStorage.setItem('vortex_anim', animOn ? '1' : '0'); } catch (e) {}
+        renderAnimToggle();
+    });
+    renderAnimToggle();
+
     buildNucleus();
+    buildNeural();
+    buildBrain();
+    document.querySelectorAll('.viewswitch button').forEach(b => b.addEventListener('click', () => { tick(); setView(b.dataset.view); }));
+    let startView = 'brain';
+    try { const sv = localStorage.getItem('vortex_view2'); if (sv === 'planet' || sv === 'neural' || sv === 'brain') startView = sv; } catch (e) {}
+    setView(startView);
+    requestAnimationFrame(spinLoop);
     drawSpark();
     refresh();
     setInterval(refresh, POLL_MS);
