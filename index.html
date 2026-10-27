@@ -598,6 +598,7 @@
         if (history.length < 3) { box.hidden = true; return; }
         const vals = history.map(h => h[1]);
         const min = Math.min(...vals), max = Math.max(...vals);
+        if (max - min < 0.005) { box.hidden = true; return; }   // courbe plate : rien à montrer
         const span = (max - min) || 1;
         const W = 300, H = 64, pad = 4;
         const pts = vals.map((v, i) => [(i / (vals.length - 1)) * W, H - pad - ((v - min) / span) * (H - pad * 2)]);
@@ -1340,10 +1341,19 @@
         ring.style.strokeDashoffset = 100.5 * (1 - Math.max(0, Math.min(100, wr)) / 100);
         ring.style.stroke = wr >= 50 ? 'var(--buy)' : (wr > 0 ? 'var(--sell)' : 'var(--muted)');
         $('h-wr').textContent = wr > 0 ? wr.toFixed(0) + '%' : '--';
+        const nTrades = Array.isArray(data.history) ? data.history.length : 0;
+        const tooFew = nTrades < 5;
         const hpf = $('h-pf');
-        hpf.textContent = pf.textContent;
-        hpf.className = pf.className;
-        $('h-pf-sub').textContent = pf.textContent === '--' ? '\u00a0' : (pf.className.includes('buy') ? 'rentable' : 'à surveiller');
+        if (tooFew) {
+            hpf.textContent = '--';
+            hpf.className = 'num';
+            $('h-pf-sub').textContent = nTrades + ' trade' + (nTrades > 1 ? 's' : '') + ' : trop tôt';
+            ring.style.stroke = 'var(--muted)';
+        } else {
+            hpf.textContent = pf.textContent;
+            hpf.className = pf.className;
+            $('h-pf-sub').textContent = pf.textContent === '--' ? '\u00a0' : (pf.className.includes('buy') ? 'rentable' : 'à surveiller');
+        }
         const hdd = $('h-dd');
         hdd.textContent = dd.toFixed(1) + ' %';
         hdd.className = ddEl.className;
